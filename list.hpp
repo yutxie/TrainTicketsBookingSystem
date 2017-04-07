@@ -1,3 +1,6 @@
+/**
+ * similar to vector.hpp in STLite
+ */
 template<typename T>
 class list {
 public:
