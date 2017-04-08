@@ -29,3 +29,5 @@ class invalid_iterator : public exception {
 class container_is_empty : public exception {
 	/* __________________________ */
 };
+
+class no_such_file : public exception {};
