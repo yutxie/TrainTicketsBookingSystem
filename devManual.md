@@ -47,6 +47,10 @@ public:
 
 ### 第8周
 
+注意: 
+1. 带*号表示暂缓实现
+2. 所需要调用的已经实现好的工具类(如timer)请于dev-tools查找
+
 #### station
 车站类, train的一个"内嵌类", 某个具体车次运行路线中的某个车站
 如A次列车和与其不同B次列车均会经过的上海站, 在这里认为是不同的
@@ -75,9 +79,8 @@ public:
 | void | modifyStartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
 | void | query(int type, int u, int v) | 输出始发时间, 发售状态, 剩余票数 |
-| 暂缓实现 |
-| ticket | orderTicket(int type, int u, int v) | 返回订得的票 |
-| void | disorderTicket(const ticket &tk) | 退订该票 |
+| ticket | *orderTicket(int type, int u, int v) | 返回订得的票 |
+| void | *disorderTicket(const ticket &tk) | 退订该票 |
 
 注意:
 1. 所有修改均需要check发售状态为false
@@ -95,8 +98,7 @@ public:
 | int | getType() | 返回座位类型 |
 | int | getPrice() | 返回票价 |
 | friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | 输出所属车次, 始发时间, 作为类型, 票价, 起点站与终点站(, 所属用户信息) |
-| 暂缓实现 |
-| user | getUser() | 返回所属用户 |
+| user | *getUser() | 返回所属用户 |
 
 ### 第7周
 

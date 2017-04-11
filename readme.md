@@ -2,7 +2,7 @@
 
 ## 文档
 
-1. 开发手册
+1. [开发手册](https://github.com/xxxxxyt/TrainTicketsBookingSystem/blob/master/devManual.md "开发手册")
 2. 用户手册
 
 ## 日程安排
