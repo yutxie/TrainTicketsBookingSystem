@@ -1,3 +1,12 @@
+#ifndef SJTU_EXCEPTIONS_HPP
+#define SJTU_EXCEPTIONS_HPP
+
+#include <cstddef>
+#include <cstring>
+#include <string>
+
+namespace sjtu {
+
 class exception {
 protected:
 	const std::string variant = "";
@@ -29,3 +38,8 @@ class invalid_iterator : public exception {
 class container_is_empty : public exception {
 	/* __________________________ */
 };
+
+class no_such_file : public exception {};
+}
+
+#endif
