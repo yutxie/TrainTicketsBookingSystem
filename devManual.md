@@ -1,14 +1,14 @@
-# ¿ª·¢ÊÖ²á
+# å¼€å‘æ‰‹å†Œ
 
-## Ïà¹Ø¹æ·¶
+## ç›¸å…³è§„èŒƒ
 
-1. ÎÄ¼şÃûÓëÀàÃûÏàÍ¬Óë¹æ·¶ÏàÍ¬
-2. ¹æ·¶´úÂë·ç¸ñ: 
-	1. ³ı³£Á¿È«´óĞ´ÍâÆäÓà¾ù°´´óĞ¡ÍÕ·åÃüÃû·¨(Ğ¡Ğ´¿ªÍ·)
-	2. ¶şÔªÔËËã·ûÁ½²à¼Ó¿Õ¸ñ
-	3. ´óÀ¨ºÅÓëº¯ÊıÍ·Í¬ĞĞ
-3. Ê¹ÓÃsjtuÃû×Ö¿Õ¼ä
-4. Ê¹ÓÃÍ·ÎÄ¼ş±£»¤·ûºÅ
+1. æ–‡ä»¶åä¸ç±»åç›¸åŒä¸è§„èŒƒç›¸åŒ
+2. è§„èŒƒä»£ç é£æ ¼: 
+	1. é™¤å¸¸é‡å…¨å¤§å†™å¤–å…¶ä½™å‡æŒ‰å¤§å°é©¼å³°å‘½åæ³•(å°å†™å¼€å¤´)
+	2. äºŒå…ƒè¿ç®—ç¬¦ä¸¤ä¾§åŠ ç©ºæ ¼
+	3. å¤§æ‹¬å·ä¸å‡½æ•°å¤´åŒè¡Œ
+3. ä½¿ç”¨sjtuåå­—ç©ºé—´
+4. ä½¿ç”¨å¤´æ–‡ä»¶ä¿æŠ¤ç¬¦å·
 
 *myClass.hpp*
 ```cpp
@@ -25,96 +25,96 @@ public:
 #endif
 ```
 
-## Ë¼Â·Í¼½â
-ÉĞ´ı¸üĞÂ!
+## æ€è·¯å›¾è§£
+å°šå¾…æ›´æ–°!
 
-## ÎÄ¼ş»ã×Ü
+## æ–‡ä»¶æ±‡æ€»
 | file name | description |
 |:---:|:----:|
-| system.hpp | ¶©Æ±ÏµÍ³ |
-| train.hpp | ³µ´Î |
-| plan.hpp | ÔËĞĞ¼Æ»® |
-| station.hpp | ³µÕ¾ |
-| ticket.hpp | ³µÆ± |
-| user.hpp | ¹ÜÀíÔ±»òÓÃ»§ |
-| vector.hpp | vectorÈİÆ÷ |
-| map.hpp | mapÈİÆ÷ |
-| list.hpp | listÈİÆ÷ |
-| timer.hpp | Ê±¼ä |
-| log.hpp | ÏµÍ³ÈÕÖ¾ |
+| system.hpp | è®¢ç¥¨ç³»ç»Ÿ |
+| train.hpp | è½¦æ¬¡ |
+| plan.hpp | è¿è¡Œè®¡åˆ’ |
+| station.hpp | è½¦ç«™ |
+| ticket.hpp | è½¦ç¥¨ |
+| user.hpp | ç®¡ç†å‘˜æˆ–ç”¨æˆ· |
+| vector.hpp | vectorå®¹å™¨ |
+| map.hpp | mapå®¹å™¨ |
+| list.hpp | listå®¹å™¨ |
+| timer.hpp | æ—¶é—´ |
+| log.hpp | ç³»ç»Ÿæ—¥å¿— |
 
-## Àà½Ó¿Ú
+## ç±»æ¥å£
 
-### µÚ8ÖÜ
+### ç¬¬8å‘¨
 
-×¢Òâ: 
-1. ´ø*ºÅ±íÊ¾Ôİ»ºÊµÏÖ
-2. ËùĞèÒªµ÷ÓÃµÄÒÑ¾­ÊµÏÖºÃµÄ¹¤¾ßÀà(Èçtimer)ÇëÓÚdev-tools²éÕÒ
+æ³¨æ„: 
+1. å¸¦*å·è¡¨ç¤ºæš‚ç¼“å®ç°
+2. æ‰€éœ€è¦è°ƒç”¨çš„å·²ç»å®ç°å¥½çš„å·¥å…·ç±»(å¦‚timer)è¯·äºbranch-devæŸ¥æ‰¾
 
 #### station
-³µÕ¾Àà, trainµÄÒ»¸ö"ÄÚÇ¶Àà", Ä³¸ö¾ßÌå³µ´ÎÔËĞĞÂ·ÏßÖĞµÄÄ³¸ö³µÕ¾
-ÈçA´ÎÁĞ³µºÍÓëÆä²»Í¬B´ÎÁĞ³µ¾ù»á¾­¹ıµÄÉÏº£Õ¾, ÔÚÕâÀïÈÏÎªÊÇ²»Í¬µÄ
+è½¦ç«™ç±», trainçš„ä¸€ä¸ª"å†…åµŒç±»", æŸä¸ªå…·ä½“è½¦æ¬¡è¿è¡Œè·¯çº¿ä¸­çš„æŸä¸ªè½¦ç«™
+å¦‚Aæ¬¡åˆ—è½¦å’Œä¸å…¶ä¸åŒBæ¬¡åˆ—è½¦å‡ä¼šç»è¿‡çš„ä¸Šæµ·ç«™, åœ¨è¿™é‡Œè®¤ä¸ºæ˜¯ä¸åŒçš„
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  ¹¹Ôìº¯Êı |
-| string | getName() | ·µ»Ø¸Ã³µÕ¾µÄÃû×Ö |
-| int | getId() | ·µ»Ø¸Ã³µÕ¾µÄ±àºÅ |
-| string | getTrain() | ·µ»ØËùÊôµÄ³µ´Î |
-| timer | getStopTime() | ·µ»ØÔÚ¸Ã³µ´Î´Ó³ö·¢µ½Í£¿¿ÔÚ¸ÃÕ¾µÄÊ±¼ä²î |
-| timer | getDepartTime() | ·µ»Ø¸Ã³µ´Î´Ó³ö·¢µ½Àë¿ª¸ÃÕ¾µÄÊ±¼ä²î |
-| int | getLength() | ·µ»Ø¸Ã³µ´Î´Ó³ö·¢µ½Í£¿¿ÔÚ¸ÃÕ¾µÄĞĞÊ»Àï³ÌÊı |
-| int | getPrice(int type) | ·µ»Ø¸Ã³µ´ÎµÄtypeÀàĞÍ×ùÎ»´Ó³ö·¢µ½¸ÃÕ¾µÄÆ±¼Û ÆäÖĞtype=1,2,3·Ö±ğ±íÊ¾Ò»µÈ×ù,¶şµÈ×ù,ÈıµÈ×ù |
+| / | station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  æ„é€ å‡½æ•° |
+| string | getName() | è¿”å›è¯¥è½¦ç«™çš„åå­— |
+| int | getId() | è¿”å›è¯¥è½¦ç«™çš„ç¼–å· |
+| string | getTrain() | è¿”å›æ‰€å±çš„è½¦æ¬¡ |
+| timer | getStopTime() | è¿”å›åœ¨è¯¥è½¦æ¬¡ä»å‡ºå‘åˆ°åœé åœ¨è¯¥ç«™çš„æ—¶é—´å·® |
+| timer | getDepartTime() | è¿”å›è¯¥è½¦æ¬¡ä»å‡ºå‘åˆ°ç¦»å¼€è¯¥ç«™çš„æ—¶é—´å·® |
+| int | getLength() | è¿”å›è¯¥è½¦æ¬¡ä»å‡ºå‘åˆ°åœé åœ¨è¯¥ç«™çš„è¡Œé©¶é‡Œç¨‹æ•° |
+| int | getPrice(int type) | è¿”å›è¯¥è½¦æ¬¡çš„typeç±»å‹åº§ä½ä»å‡ºå‘åˆ°è¯¥ç«™çš„ç¥¨ä»· å…¶ä¸­type=1,2,3åˆ†åˆ«è¡¨ç¤ºä¸€ç­‰åº§,äºŒç­‰åº§,ä¸‰ç­‰åº§ |
 
 #### plan
-ÔËĞĞ¼Æ»®Àà, trainµÄÒ»¸ö"ÄÚÇ¶Àà", ÓÉËùÊô³µ´ÎÓëÊ¼·¢Ê±¼äÎ¨Ò»È·¶¨
+è¿è¡Œè®¡åˆ’ç±», trainçš„ä¸€ä¸ª"å†…åµŒç±»", ç”±æ‰€å±è½¦æ¬¡ä¸å§‹å‘æ—¶é—´å”¯ä¸€ç¡®å®š
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | plan(const string &_train, const timer &_startTime, bool _status = false) | ¹¹Ôìº¯Êı |
-| string | getTrain() | ·µ»ØËùÊôµÄ³µ´Î |
-| timer | getStartTime() | ·µ»ØÊ¼·¢Ê±¼ä |
-| bool | getStatus() | ·µ»Ø·¢ÊÛ×´Ì¬ |
-| int | getLeftTickets(int type, int u, int v) | ·µ»Ø´Ó¸Ã³µ´ÎuthÕ¾µãµ½vthÕ¾µãtypeÀàĞÍ×ùÎ»Ê£ÓàÆ±Êı ÌØÊâµØÈô´«Èë²»ºÏ·¨Ôò·µ»Ø0 |
-| void | modifyStartTime() | ĞŞ¸ÄÊ¼·¢Ê±¼ä |
-| void | modifyStatus(bool newStatus) | ĞŞ¸ÄÊÛÆ±×´Ì¬ |
-| void | query(int type, int u, int v) | Êä³öÊ¼·¢Ê±¼ä, ·¢ÊÛ×´Ì¬, Ê£ÓàÆ±Êı |
-| ticket | **orderTicket**(int type, int u, int v) | ·µ»Ø¶©µÃµÄÆ± |
-| void | **disorderTicket**(const ticket &tk) | ÍË¶©¸ÃÆ± |
+| / | plan(const string &_train, const timer &_startTime, bool _status = false) | æ„é€ å‡½æ•° |
+| string | getTrain() | è¿”å›æ‰€å±çš„è½¦æ¬¡ |
+| timer | getStartTime() | è¿”å›å§‹å‘æ—¶é—´ |
+| bool | getStatus() | è¿”å›å‘å”®çŠ¶æ€ |
+| int | getLeftTickets(int type, int u, int v) | è¿”å›ä»è¯¥è½¦æ¬¡uthç«™ç‚¹åˆ°vthç«™ç‚¹typeç±»å‹åº§ä½å‰©ä½™ç¥¨æ•° ç‰¹æ®Šåœ°è‹¥ä¼ å…¥ä¸åˆæ³•åˆ™è¿”å›0 |
+| void | modifyStartTime() | ä¿®æ”¹å§‹å‘æ—¶é—´ |
+| void | modifyStatus(bool newStatus) | ä¿®æ”¹å”®ç¥¨çŠ¶æ€ |
+| void | query(int type, int u, int v) | è¾“å‡ºå§‹å‘æ—¶é—´, å‘å”®çŠ¶æ€, å‰©ä½™ç¥¨æ•° |
+| ticket | **orderTicket**(int type, int u, int v) | è¿”å›è®¢å¾—çš„ç¥¨ |
+| void | **disorderTicket**(const ticket &tk) | é€€è®¢è¯¥ç¥¨ |
 
-×¢Òâ:
-1. ËùÓĞĞŞ¸Ä¾ùĞèÒªcheck·¢ÊÛ×´Ì¬Îªfalse
-2. ¶©Æ±ºó¼ÇµÃĞŞ¸ÄÓàÆ±ĞÅÏ¢
-3. ÓàÆ±ĞÅÏ¢µÄĞŞ¸ÄÓë²éÑ¯ÒªÇóÓÃÊ÷×´Êı×éÊµÏÖ
+æ³¨æ„:
+1. æ‰€æœ‰ä¿®æ”¹å‡éœ€è¦checkå‘å”®çŠ¶æ€ä¸ºfalse
+2. è®¢ç¥¨åè®°å¾—ä¿®æ”¹ä½™ç¥¨ä¿¡æ¯
+3. ä½™ç¥¨ä¿¡æ¯çš„ä¿®æ”¹ä¸æŸ¥è¯¢è¦æ±‚ç”¨æ ‘çŠ¶æ•°ç»„å®ç°
 
 #### ticket
-³µÆ±Àà, ¼ÇÂ¼Ò»ÕÅ³µÆ±µÄÏà¹ØĞÅÏ¢
+è½¦ç¥¨ç±», è®°å½•ä¸€å¼ è½¦ç¥¨çš„ç›¸å…³ä¿¡æ¯
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | ticket(const string &_train, const timer &_sartTime, int type, int u, int v | ¹¹Ôìº¯Êı ÆäÖĞu/vÎªÆğ/ÖÕµãÕ¾ÔÚ¸Ã³µ´ÎÖĞµÄÎ»ÖÃ |
-| string | getTrain() | ·µ»ØËùÊô³µ´Î |
-| timer | getStartTime() | ·µ»ØËùÊôÔËĞĞ¼Æ»®µÄÊ¼·¢Ê±¼ä |
-| int | getType() | ·µ»Ø×ùÎ»ÀàĞÍ |
-| int | getPrice() | ·µ»ØÆ±¼Û |
-| friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | Êä³öËùÊô³µ´Î, Ê¼·¢Ê±¼ä, ×÷ÎªÀàĞÍ, Æ±¼Û, ÆğµãÕ¾ÓëÖÕµãÕ¾(, ËùÊôÓÃ»§ĞÅÏ¢) |
-| user | **getUser**() | ·µ»ØËùÊôÓÃ»§ |
+| / | ticket(const string &_train, const timer &_sartTime, int type, int u, int v | æ„é€ å‡½æ•° å…¶ä¸­u/vä¸ºèµ·/ç»ˆç‚¹ç«™åœ¨è¯¥è½¦æ¬¡ä¸­çš„ä½ç½® |
+| string | getTrain() | è¿”å›æ‰€å±è½¦æ¬¡ |
+| timer | getStartTime() | è¿”å›æ‰€å±è¿è¡Œè®¡åˆ’çš„å§‹å‘æ—¶é—´ |
+| int | getType() | è¿”å›åº§ä½ç±»å‹ |
+| int | getPrice() | è¿”å›ç¥¨ä»· |
+| friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | è¾“å‡ºæ‰€å±è½¦æ¬¡, å§‹å‘æ—¶é—´, ä½œä¸ºç±»å‹, ç¥¨ä»·, èµ·ç‚¹ç«™ä¸ç»ˆç‚¹ç«™(, æ‰€å±ç”¨æˆ·ä¿¡æ¯) |
+| user | **getUser**() | è¿”å›æ‰€å±ç”¨æˆ· |
 
 
-### µÚ7ÖÜ
+### ç¬¬7å‘¨
 
 #### timer
 
-Ê±¼äÀà, ÓÃÓÚ´¦ÀíÊ±¼äÏà¹ØµÄÎÊÌâ
+æ—¶é—´ç±», ç”¨äºå¤„ç†æ—¶é—´ç›¸å…³çš„é—®é¢˜
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) | ¹¹Ôìº¯Êı ÆäÖĞss±íÊ¾·Ö |
-| friend std::ostream & | operator<< (std::ostream &os, const timer &obj) | °´ yy/mm/dd hh:ss µÄ¸ñÊ½Êä³öÊ±¼äĞÅÏ¢ |
-| friend timer | operator- (const timer &obj1, const timer &obj2) | Êä³öobj1Óëobj2µÄÊ±¼ä²î ÒªÇóobj2>obj1·ñÔòÅ×³öexception()Òì³£ ÒªÇóÊäÈë¾¡Á¿ºÏ·¨×î¶àÖ»ÄÜÏà²îÌìÊı¼¶±ğ |
-| friend bool | operator == (const timer &obj1, const timer &obj2) | ±È½Ïº¯Êı |
-| friend bool | operator < (const timer &obj1, const timer &obj2) | ±È½Ïº¯Êı |
-| friend bool | operator > (const timer &obj1, const timer &obj2) | ±È½Ïº¯Êı |
-| friend bool | operator <= (const timer &obj1, const timer &obj2)  | ±È½Ïº¯Êı |
-| friend bool | operator >= (const timer &obj1, const timer &obj2) | ±È½Ïº¯Êı |
+| / | timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) | æ„é€ å‡½æ•° å…¶ä¸­ssè¡¨ç¤ºåˆ† |
+| friend std::ostream & | operator<< (std::ostream &os, const timer &obj) | æŒ‰ yy/mm/dd hh:ss çš„æ ¼å¼è¾“å‡ºæ—¶é—´ä¿¡æ¯ |
+| friend timer | operator- (const timer &obj1, const timer &obj2) | è¾“å‡ºobj1ä¸obj2çš„æ—¶é—´å·® è¦æ±‚obj2>obj1å¦åˆ™æŠ›å‡ºexception()å¼‚å¸¸ è¦æ±‚è¾“å…¥å°½é‡åˆæ³•æœ€å¤šåªèƒ½ç›¸å·®å¤©æ•°çº§åˆ« |
+| friend bool | operator == (const timer &obj1, const timer &obj2) | æ¯”è¾ƒå‡½æ•° |
+| friend bool | operator < (const timer &obj1, const timer &obj2) | æ¯”è¾ƒå‡½æ•° |
+| friend bool | operator > (const timer &obj1, const timer &obj2) | æ¯”è¾ƒå‡½æ•° |
+| friend bool | operator <= (const timer &obj1, const timer &obj2)  | æ¯”è¾ƒå‡½æ•° |
+| friend bool | operator >= (const timer &obj1, const timer &obj2) | æ¯”è¾ƒå‡½æ•° |
 
