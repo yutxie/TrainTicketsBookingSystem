@@ -1,6 +1,11 @@
-#include <iostream>
-#include "exception.hpp"
+#ifndef SJTU_TIMER_HPP
+#define SJTU_TIMER_HPP
 
+#include <iostream>
+#include "exceptions.hpp"
+
+namespace sjtu {
+	
 class timer {
 	int yy, mm, dd;
 	int hh, ss;
@@ -62,3 +67,7 @@ public:
 		return obj1 > obj2 || obj1 == obj2;
 	}
 };
+
+}
+
+#endif
