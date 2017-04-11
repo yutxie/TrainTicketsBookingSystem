@@ -70,7 +70,7 @@ public:
 运行计划类, train的一个"内嵌类", 由所属车次与始发时间唯一确定
 
 | return type | method | description |
-|:-----:|:------:|
+|:----------:|:---------------:|:----------:|
 | / | plan(const string &_train, const timer &_startTime, bool _status = false) | 构造函数 |
 | string | getTrain() | 返回所属的车次 |
 | timer | getStartTime() | 返回始发时间 |
@@ -91,7 +91,7 @@ public:
 车票类, 记录一张车票的相关信息
 
 | return type | method | description |
-|:-----:|:------:|
+|:----------:|:---------------:|:----------:|
 | / | ticket(const string &_train, const timer &_sartTime, int type, int u, int v | 构造函数 其中u/v为起/终点站在该车次中的位置 |
 | string | getTrain() | 返回所属车次 |
 | timer | getStartTime() | 返回所属运行计划的始发时间 |
@@ -108,7 +108,7 @@ public:
 时间类, 用于处理时间相关的问题
 
 | return type | method | description |
-|:-----:|:------:|
+|:----------:|:---------------:|:----------:|
 | / | timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) | 构造函数 其中ss表示分 |
 | friend std::ostream & | operator<< (std::ostream &os, const timer &obj) | 按 yy/mm/dd hh:ss 的格式输出时间信息 |
 | friend timer | operator- (const timer &obj1, const timer &obj2) | 输出obj1与obj2的时间差 要求obj2>obj1否则抛出exception()异常 要求输入尽量合法最多只能相差天数级别 |
