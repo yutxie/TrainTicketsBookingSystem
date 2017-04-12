@@ -1,6 +1,8 @@
 # 开发手册
 
-## 相关规范
+[TOC]
+
+## 代码相关规范
 
 1. 文件名与类名相同与规范相同
 2. 规范代码风格: 
@@ -24,6 +26,12 @@ public:
 }
 #endif
 ```
+
+## Git管理相关规范
+
+1. 请以 dev 为基准新建名为 dev-className 的 branch 并在其中工作
+2. 代码文件保存在 source 文件夹中
+3. 完成后请以 dev 为基准 merge dev & dev-className
 
 ## 思路图解
 尚待更新!

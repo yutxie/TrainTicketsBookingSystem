@@ -1,5 +1,7 @@
 # TrainTicketsBookingSystem
 
+[TOC]
+
 ## 文档
 
 1. [开发手册](https://github.com/xxxxxyt/TrainTicketsBookingSystem/blob/master/devManual.md "开发手册")
