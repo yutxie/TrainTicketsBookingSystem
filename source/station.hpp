@@ -10,7 +10,6 @@
 #define SJTU_STATION_HPP
 #include <exceptions.hpp>
 #include <timer.hpp>
-#include <cstring>
 namespace sjtu {
     class station {
     private:
