@@ -6,8 +6,8 @@
 //  Copyright © 2017年 李江贝. All rights reserved.
 //
 
-#ifndef _LIST_H_
-#define _LIST_H_
+#ifndef _SJTU_LIST_HPP
+#define _SJTU_LIST_HPP
 /**
  * similar to vector.hpp in STLite
  */
@@ -610,4 +610,4 @@ public:
 };
 }
 
-#endif /* list_h */
+#endif /* list_hpp */
