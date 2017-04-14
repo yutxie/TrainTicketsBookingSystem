@@ -10,6 +10,7 @@ class timer {
 	int yy, mm, dd;
 	int hh, ss;
 public:
+	
 	timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) 
 		: yy(_yy), mm(_mm), dd(_dd), hh(_hh), ss(_ss) {}
 	friend std::istream & operator>> (std::istream &is, 
