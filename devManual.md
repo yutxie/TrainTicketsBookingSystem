@@ -63,7 +63,10 @@ public:
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
+| / | station() | 默认构造 |
 | / | station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  构造函数 |
+| / | station(const station &other) | 拷贝构造 |
+| station & | operator=(const station &other) | 赋值 |
 | string | getName() | 返回该车站的名字 |
 | int | getId() | 返回该车站的编号 |
 | string | getTrain() | 返回所属的车次 |
@@ -77,7 +80,10 @@ public:
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | plan(const string &_train, const timer &_startTime, bool _status = false) | 构造函数 |
+| / | plan() | 默认构造 |
+| / | plan(const string &_train, const timer &_startTime, bool _status) | 构造函数 |
+| / | plan(const plan &other) | 拷贝构造 |
+| plan & | operator=(const &other) | 赋值 |
 | string | getTrain() | 返回所属的车次 |
 | timer | getStartTime() | 返回始发时间 |
 | bool | getStatus() | 返回发售状态 |
@@ -98,7 +104,10 @@ public:
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
+| / | ticket() | 默认构造 |
 | / | ticket(const string &_train, const timer &_sartTime, int type, int u, int v | 构造函数 其中u/v为起/终点站在该车次中的位置 |
+| / | ticket(const ticket &other) | 拷贝构造 |
+| ticket & | operator=(const ticket &other) | 赋值 |
 | string | getTrain() | 返回所属车次 |
 | timer | getStartTime() | 返回所属运行计划的始发时间 |
 | int | getType() | 返回座位类型 |
