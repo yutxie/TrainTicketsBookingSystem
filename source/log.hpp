@@ -8,32 +8,49 @@
 
 namespace sjtu {
 class log {
+	
+	class no_such_file : public exception {
+	public:
+		no_such_file() : exception(
+			"no_such_file",
+			"There is no such file to open up!"
+			) {}
+	};
+	
 	std::string fileName;
 	std::fstream io;
 public:
-	log() {}
-	log(const std::string &_fileName) : fileName(_fileName) {
-		io.open(fileName);
-		if(!io) throw no_such_file();
+	log() {
+		fileName = "";
 	}
 	~log() {
+		if(io) io.close();
+	}
+	void open(const std::string &_fileName) {
+		io.open(fileName = _fileName);
+		if(!io) throw no_such_file();
+	}
+	void close() {
+		if(!io) throw no_such_file();
 		io.close();
 	}
 	void clear() {
 		if(!io) throw no_such_file();
-		io.open(fileName, std::fstream::trunc);
+		io.close();
+		io.open(fileName, std::fstream::in | std::fstream::out | 
+			std::fstream::trunc);
 	}
 	friend std::ostream & operator<< (std::ostream &os, log &lg) {
 		if(!lg.io) throw no_such_file();
 		lg.io.seekg(0, lg.io.beg);
 		char ch;
-		while(lg.io >> ch) os << ch;
+		while(lg.io.get(ch)) os.put(ch);
 		return os;
 	}
-	void add(const std::string &username, const std::string &opt) {
+	void add(const std::string &str) {
 		if(!io) throw no_such_file();
 		io.seekp(0, io.end);
-		io << username << ' ' << opt << '.' << std::endl;
+		io << str + '\n';
 	}
 };
 
