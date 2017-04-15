@@ -21,12 +21,36 @@ namespace sjtu {
         timer stopTime;
         timer departTime;
     public:
+        station() {};
         station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTime, int _length, int _price[]) : stationName(_name), stationId(_id), trainName(_train), stopTime(_stopTime), departTime(_departTime), lengthFromStart(_length) {
             for(int i = 1; i <= 3; ++i){
                 price[i] = _price[i];
             }
         };
+        station(const station &other) {
+            stationName = other.stationName;
+            stationId = other.stationId;
+            trainName = other.trainName;
+            stopTime = other.stopTime;
+            departTime = other.departTime;
+            lengthFromStart = other.lengthFromStart;
+            for(int i = 1; i <= 3; ++i) {
+                price[i] = other.price[i];
+            }
+        }
         
+        station &operator=(const station & other) {
+            stationName = other.stationName;
+            stationId = other.stationId;
+            trainName = other.trainName;
+            stopTime = other.stopTime;
+            departTime = other.departTime;
+            lengthFromStart = other.lengthFromStart;
+            for(int i = 1; i <= 3; ++i) {
+                price[i] = other.price[i];
+            }
+            return *this;
+        }
         string getName() const {
             return stationName;
         }
