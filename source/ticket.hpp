@@ -19,6 +19,7 @@ namespace sjtu{
 		int price;//Æ±¼Û 
 		
 	public:
+		ticket() {}
 		ticket(const std::string &_train, const std::string &_userId, 
 			const std::string &_userName, const std::string &_departStation,
 			const std::string &_stopStation, const timer &_departTime, 
