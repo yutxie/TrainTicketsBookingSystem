@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
-//#include "tickets.hpp"
+#include "tickets.hpp"
 
 namespace sjtu {
 	class plan {
@@ -46,13 +46,28 @@ namespace sjtu {
 			for (int i = u; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
 			for (int i = v; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
 		}
-		/*
 		void disorederTickey(const ticket &tk) {
 			int type = tk.type,u = tk.departStation,v = tk.stopStation;
 			for (int i = u; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
 			for (int i = v; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
 		}
-		*/
+		friend std::ostream & operator << (std::ostream os,
+			const plan &obj) {
+			os << "train: " << obj.train << std::endl;
+			os << "stationNumber: " << obj.stationNumber << std::endl;
+			os << "startTime: " << obj.startTime << std::endl;
+			os << "status " << obj.status << std::endl;
+			os << "ticketNumber:" << std::endl;
+			for (int i = 1; i <= 3; ++i) {
+				for (int j = 1; j <= obj.getLeftTickets(); ++j) {
+					int number = 0;
+					for (int k = j; k; k -= k & (-k)) number += obj.ticketNumber[i][k];
+					for (int k = j - 1; k; k -= k & (-k)) number -= obj.ticketNumber[i][k];
+					os << number << ' ';
+				}
+				os << std::endl;
+			}
+		}
 		~plan() {
 			if (train != "") {
 				for (int i = 1; i <= 3; ++i)
