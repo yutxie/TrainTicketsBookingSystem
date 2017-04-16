@@ -16,6 +16,7 @@
 #include <climits>
 #include <cstddef>
 #include <fstream>
+#include <string>
 namespace sjtu{
 template<typename T>
 class list {
@@ -37,7 +38,7 @@ private:
     node * head;
     node * tail;
     int currentlength;
-    std::ofstream out;
+	std::fstream io;
 public:
     /**
      * TODO
@@ -352,7 +353,8 @@ public:
         tail -> prev = head;
         currentlength = 0;
     }
-    list(const std::fstream &f) {
+    /*  //original version
+	list(const std::fstream &f) {
         out.open("f");
         std::ifstream in("f");
         int num;
@@ -368,11 +370,8 @@ public:
             push_back(tmp);
         }
         in.close();
-        /**
-         * import data from this fstream f
-         * export data to f when you destruct this list
-         */
     }
+	*/
     list(const list & other){
         head = new node;
         tail = new node;
@@ -386,6 +385,14 @@ public:
     /**
      * TODO Destructor
      */
+	~list() {
+        for(int i = 1;i <= currentlength; ++i){
+            pop_front();
+        }
+        delete head;
+        delete tail;
+	}
+	/* original version
     ~list() {
         out.write(reinterpret_cast<char*>(&currentlength), sizeof(int));
         T tmp;
@@ -398,12 +405,39 @@ public:
         delete head;
         delete tail;
     }
+	*/
     /**
      * assigns specified element with bounds checking
      * throw index_out_of_bound if pos is not in [0, size)
      * !!! Pay attentions
      *   In STL this operator does not check the boundary but I want you to do.
      */
+	void readIn(const std::string &fileName) {
+		if(!empty()) throw container_is_not_empty();
+		io.open(fileName, std::fstream::in);
+		if(!io) throw no_such_file();
+		int _currentlength;
+		io.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
+		T x;
+		//std::cout << _currentlength << std::endl;
+		for(int i = 0; i < _currentlength; ++i) {
+			io.read(reinterpret_cast<char *> (&x), sizeof(T));
+			//std::cout << x << std::endl;
+			push_back(x);
+		}
+	}
+	void writeOut(const std::string &fileName) {
+		if(io) io.close();
+		io.open(fileName, std::fstream::out | std::fstream::binary);
+		if(!io) throw no_such_file();
+		io.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
+		node *ptr = head -> next;
+		while(ptr != tail) {
+			std::cout << ptr -> value << std::endl;
+			io.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
+			ptr = ptr -> next;
+		}
+	}
     list & operator = (const list & other){
         clear();
         for(int i = 0; i < other.size(); ++i){
