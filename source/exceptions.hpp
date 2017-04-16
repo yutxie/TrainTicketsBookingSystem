@@ -13,6 +13,8 @@ protected:
 	std::string detail = "";
 public:
 	exception() {}
+	exception(const std::string &_variant, const std::string &_detail) :
+		variant(_variant), detail(_detail) {}
 	exception(const exception &ec) : variant(ec.variant), detail(ec.detail) {}
 	virtual std::string what() {
 		return variant + " " + detail;
@@ -24,24 +26,55 @@ public:
  * Please complete them.
  */
 class index_out_of_bound : public exception {
-	/* __________________________ */
+	index_out_of_bound() : exception(
+		"index_out_of_bound",
+		"Index out of bound!"
+		) {}
 };
 
 class runtime_error : public exception {
-	/* __________________________ */
+	runtime_error() : exception(
+		"runtime_error",
+		"Runtime error!"
+		) {}
 };
 
 class invalid_iterator : public exception {
-	/* __________________________ */
+	invalid_iterator() : exception(
+		"invalid_iterator",
+		"Invalid iterator!"
+		) {}
 };
 
 class container_is_empty : public exception {
-	/* __________________________ */
+	container_is_empty() : exception(
+		"container_is_empty",
+		"Container is empty!"
+		) {}
 };
 
-class no_such_file : public exception {};
+class container_is_not_empty : public exception {
+	container_is_not_empty() : exception(
+		"container_is_not_empty",
+		"Container is not empty!"
+		) {}
+};
 
-class invalid_input : public exception {};
+class invalid_input : public exception {
+public:
+	invalid_input() : exception(
+		"invalid_input",
+		"Invalid input!"
+		) {}
+};
+
+class no_such_file : public exception {
+public:
+	no_such_file() : exception(
+		"no_such_file",
+		"There is no such file to open up!"
+		) {}
+};
+
 }
-
 #endif

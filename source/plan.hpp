@@ -11,9 +11,10 @@ namespace sjtu {
 	class plan {
 	private:
 		std::string train;
-		int stationNumber,*ticketNumber[4];
 		timer startTime;
+		int stationNumber;
 		bool status;
+		int *ticketNumber[4];
 		static const int TOTAL = 2000;
 	public:
 		plan() :train(""),startTime(),status(0) {}
