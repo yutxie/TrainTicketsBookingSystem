@@ -38,9 +38,6 @@ public:
 3. 输出信息遵循以下格式
 
 ```
-class: calss_name
-object: object_name
-
 member_name1: value1
 member_name2:
     value211 value212 ...
