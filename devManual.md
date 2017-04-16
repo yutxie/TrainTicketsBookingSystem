@@ -31,10 +31,21 @@ public:
 2. 代码文件保存在 source 文件夹中
 3. 完成后请以 dev 为基准 merge dev & dev-className
 
-## 错误类相关规范
+## 调试相关规范
 
 1. 通用的错误类模版保存在 exceptions.hpp 中, 需要 include
 2. 若其中不包含你所需要的特殊错误类, 则自行在 myClass 中继承 exception 类声明内嵌类 myExcepiton
+3. 输出信息遵循以下格式
+
+> -----------------------------
+> class: calss_name
+> object: object_name
+>
+> member_name1: value1
+> member_name2:
+>     value211 value212 ...
+>     value221 ...
+> -----------------------------
 
 ```cpp
 class myClass {
@@ -91,6 +102,8 @@ class myClass {
 | timer | getDepartTime() | 返回该车次从出发到离开该站的时间差 |
 | int | getLength() | 返回该车次从出发到停靠在该站的行驶里程数 |
 | int | getPrice(int type) | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
+| void | modifyPrice(int type, int newPrice) | 修改票价 |
+| friend std::ostream & | operator<<(const std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
 
 #### plan
 运行计划类, train的一个"内嵌类", 由所属车次与始发时间唯一确定
@@ -110,6 +123,7 @@ class myClass {
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
+| friend std::ostream & | operator<<(const std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
 
 注意:
 1. 所有修改均需要检查发售状态为 false
@@ -135,7 +149,7 @@ class myClass {
 | timer | getStopTime() | 返回到达时间 |
 | int | getType() | 返回座位类型 |
 | int | getPrice() | 返回票价 |
-| friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
+| friend std::ostream &  | operator<<(const std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
 
 
 ### 第7周
@@ -149,9 +163,9 @@ class myClass {
 | / | timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) | 构造函数 其中ss表示分 |
 | friend std::ostream & | operator<< (std::ostream &os, const timer &obj) | 按 yy/mm/dd hh:ss 的格式输出时间信息 |
 | friend timer | operator- (const timer &obj1, const timer &obj2) | 输出obj1与obj2的时间差 要求obj2>obj1否则抛出exception()异常 要求输入尽量合法最多只能相差天数级别 |
-| friend bool | operator == (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator < (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator > (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator <= (const timer &obj1, const timer &obj2)  | 比较函数 |
-| friend bool | operator >= (const timer &obj1, const timer &obj2) | 比较函数 |
+| friend bool | operator== (const timer &obj1, const timer &obj2) | 比较函数 |
+| friend bool | operator< (const timer &obj1, const timer &obj2) | 比较函数 |
+| friend bool | operator> (const timer &obj1, const timer &obj2) | 比较函数 |
+| friend bool | operator<= (const timer &obj1, const timer &obj2)  | 比较函数 |
+| friend bool | operator>= (const timer &obj1, const timer &obj2) | 比较函数 |
 
