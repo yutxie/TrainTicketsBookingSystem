@@ -33,6 +33,7 @@ public:
 4. 每个人都请分别在 source/ 中创建一个名为 dev-myClass 的文件夹, 完成代码前在里面工作
 5. 完成后请转移 myClass.hpp 到 source/ 下并删除该文件夹
 6. 若需要调试则建立一 source/debug-myClass 文件夹, 请复制文件到文件夹中而非剪切
+7. 调试完毕后无需删除文件夹 将文件夹名改为 "debug-myClass done" 即可, 但请尽量删除里面的可运行文件(如".exe", 比较占空间)
 
 ## 调试相关规范
 
