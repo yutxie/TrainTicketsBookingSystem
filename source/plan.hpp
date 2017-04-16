@@ -23,42 +23,36 @@ namespace sjtu {
 		}
 		plan(const plan &other)
 			:train(other.train),startTime(other.startTime),stationNumber(other.stationNumber),status(other.status) {}
-		plan & operator=(const plan &other) {train = other.train,startTime = other.startTime,status = other.status;}
-		std::string getTrain() {return train;}
-		timer getStartTime() {return startTime;}
-		bool getStatus() {return status;}
-		int getLeftTickets(int type,int u,int v) {
+		plan & operator=(const plan &other) {
+			if (this == &other) return *this;
+			train = other.train,startTime = other.startTime,status = other.status;
+			return *this;
+		}
+		std::string getTrain() const{return train;}
+		timer getStartTime() const{return startTime;}
+		int getStationNumber() const{return stationNumber;}
+		bool getStatus() const{return status;}
+		int getLeftTickets(int type,int u,int v) const{
 			if (u >= v || type < 1 || type > 3) return 0;
 			int number = 0;
-			/*
-			for (int i = v - 1; i; i -= i & (-i)) number += ticketNumber[type][i];
-			for (int i = u - 1; i; i -= i & (-i)) number -= ticketNumber[type][i];
-			*/
 			for (int i = v - 1; i >= u; --i) number += ticketNumber[type][i];
 			return TOTAL - number;
 		}
 		void modifyStartTime(const timer &newStartTime) {startTime = newStartTime;}
 		void modifyStatus(const bool &newStatus) {status = newStatus;}
-		void query(int type,int u,int v) {
+		void query(int type,int u,int v) const{
 			if (u >= v || type < 1 || type > 3) throw invalid_input();
 			std::cout << startTime << ' ' << status << ' ' << getLeftTickets(type,u,v) << std::endl;
 		}
 		void orderTicket(int type,int u,int v) {
 			if (u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
-			/*
-			for (int i = u; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
-			for (int i = v; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
-			*/
 			for (int i = u; i < v; ++i) ++ticketNumber[type][i];
 		}
 		void disorederTickey(int type,int u,int v) {
-			/*
-			for (int i = u; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
-			for (int i = v; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
-			*/
+			if (u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
 			for (int i = u; i < v; ++i) --ticketNumber[type][i];
 		}
-		friend std::ostream & operator << (std::ostream os,
+		friend std::ostream & operator<<(std::ostream &os,
 			const plan &obj) {
 			os << "train: " << obj.train << std::endl;
 			os << "stationNumber: " << obj.stationNumber << std::endl;
@@ -67,16 +61,11 @@ namespace sjtu {
 			os << "ticketNumber:" << std::endl;
 			for (int i = 1; i <= 3; ++i) {
 				for (int j = 1; j <= obj.stationNumber; ++j) {
-					/*
-					int number = 0;
-					for (int k = j; k; k -= k & (-k)) number += obj.ticketNumber[i][k];
-					for (int k = j - 1; k; k -= k & (-k)) number -= obj.ticketNumber[i][k];
-					os << number << ' ';
-					*/
 					os << obj.ticketNumber[i][j] << ' ';
 				}
 				os << std::endl;
 			}
+			return os;
 		}
 		~plan() {
 			if (train != "") {
