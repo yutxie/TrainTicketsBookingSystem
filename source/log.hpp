@@ -8,15 +8,6 @@
 
 namespace sjtu {
 class log {
-	
-	class no_such_file : public exception {
-	public:
-		no_such_file() : exception(
-			"no_such_file",
-			"There is no such file to open up!"
-			) {}
-	};
-	
 	std::string fileName;
 	std::fstream io;
 public:
@@ -40,7 +31,7 @@ public:
 		io.open(fileName, std::fstream::in | std::fstream::out | 
 			std::fstream::trunc);
 	}
-	friend std::ostream & operator<< (std::ostream &os, log &lg) {
+	friend std::ostream & operator<<(std::ostream &os, log &lg) {
 		if(!lg.io) throw no_such_file();
 		lg.io.seekg(0, lg.io.beg);
 		char ch;

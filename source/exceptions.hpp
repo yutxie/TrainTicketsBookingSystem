@@ -53,11 +53,26 @@ class container_is_empty : public exception {
 		) {}
 };
 
+class container_is_not_empty : public exception {
+	container_is_not_empty() : exception(
+		"container_is_not_empty",
+		"Container is not empty!"
+		) {}
+};
+
 class invalid_input : public exception {
 public:
 	invalid_input() : exception(
 		"invalid_input",
 		"Invalid input!"
+		) {}
+};
+
+class no_such_file : public exception {
+public:
+	no_such_file() : exception(
+		"no_such_file",
+		"There is no such file to open up!"
 		) {}
 };
 
