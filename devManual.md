@@ -82,11 +82,15 @@ class myClass {
 
 ## 类接口
 
-### 第8周
+### 第9周
 
-注意: 
-1. 加粗method表示暂缓实现
-2. 所需要调用的已经实现好的工具类(如timer)请于branch-dev查找
+#### user
+
+#### system
+
+#### train
+
+### 第8周
 
 #### station
 车站类, train的一个"内嵌类", 某个具体车次运行路线中的某个车站
@@ -156,6 +160,9 @@ class myClass {
 
 
 ### 第7周
+
+注意:
+1. 文件打开失败时均会 throw no_such_file();
 
 #### list
 
