@@ -27,9 +27,12 @@ public:
 
 ## Git管理相关规范
 
-1. 请以 dev 为基准新建名为 dev-className 的 branch 并在其中工作
+1. 所有代码相关的工作均在 dev 中完成
 2. 代码文件保存在 source 文件夹中
-3. 完成后请以 dev 为基准 merge dev & dev-className
+3. source/ 文件夹下的直接文件应"保证"已经全部完成并被调试好
+4. 每个人都请分别在 source/ 中创建一个名为 dev-myClass 的文件夹, 完成代码前在里面工作
+5. 完成后请转移 myClass.hpp 到 source/ 下并删除该文件夹
+6. 若需要调试则建立一 source/debug-myClass 文件夹, 请复制文件到文件夹中而非剪切
 
 ## 调试相关规范
 
@@ -94,13 +97,13 @@ class myClass {
 | / | station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  构造函数 |
 | / | station(const station &other) | 拷贝构造 |
 | station & | operator=(const station &other) | 赋值 |
-| string | getName() | 返回该车站的名字 |
-| int | getId() | 返回该车站的编号 |
-| string | getTrain() | 返回所属的车次 |
-| timer | getStopTime() | 返回在该车次从出发到停靠在该站的时间差 |
-| timer | getDepartTime() | 返回该车次从出发到离开该站的时间差 |
-| int | getLength() | 返回该车次从出发到停靠在该站的行驶里程数 |
-| int | getPrice(int type) | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
+| string | getName() const | 返回该车站的名字 |
+| int | getId() const | 返回该车站的编号 |
+| string | getTrain() const | 返回所属的车次 |
+| timer | getStopTime() const | 返回在该车次从出发到停靠在该站的时间差 |
+| timer | getDepartTime() const | 返回该车次从出发到离开该站的时间差 |
+| int | getLength() const | 返回该车次从出发到停靠在该站的行驶里程数 |
+| int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
 | friend std::ostream & | operator<<(const std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
 
@@ -113,11 +116,11 @@ class myClass {
 | / | plan(const string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
 | / | plan(const plan &other) | 拷贝构造 |
 | plan & | operator=(const &other) | 赋值 |
-| string | getTrain() | 返回所属的车次 |
-| timer | getStartTime() | 返回始发时间 |
-| int | getStationNumber() | 返回所属车次包含的车站总数 |
-| bool | getStatus() | 返回发售状态 |
-| int | getLeftTickets(int type, int u, int v) | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
+| string | getTrain() const | 返回所属的车次 |
+| timer | getStartTime() const | 返回始发时间 |
+| int | getStationNumber() const | 返回所属车次包含的车站总数 |
+| bool | getStatus() const | 返回发售状态 |
+| int | getLeftTickets(int type, int u, int v) const | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
 | void | orderTicket(int type, int u, int v) | 订票 修改余票信息 |
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartTime() | 修改始发时间 |
@@ -139,15 +142,15 @@ class myClass {
 | / | ticket(const string &_train, const string &_userId, const string &_userName, const string &_departStation, const string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
-| string | getTrain() | 返回所属车次 |
-| string | getUserId() | 返回用户id |
-| string | getUserName() | 返回用户名 |
-| string | getDepartStation() | 返回起点站 |
-| string | getStopStation() | 返回终点站 |
-| timer | getDepartTime() | 返回出发时间 |
-| timer | getStopTime() | 返回到达时间 |
-| int | getType() | 返回座位类型 |
-| int | getPrice() | 返回票价 |
+| string | getTrain() const | 返回所属车次 |
+| string | getUserId() const | 返回用户id |
+| string | getUserName() const | 返回用户名 |
+| string | getDepartStation() const | 返回起点站 |
+| string | getStopStation() const | 返回终点站 |
+| timer | getDepartTime() const | 返回出发时间 |
+| timer | getStopTime() const | 返回到达时间 |
+| int | getType() const | 返回座位类型 |
+| int | getPrice() const | 返回票价 |
 | friend std::ostream &  | operator<<(const std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
 
 
