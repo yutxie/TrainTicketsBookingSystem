@@ -74,6 +74,7 @@ class myClass {
 | list.hpp | list容器 |
 | timer.hpp | 时间 |
 | log.hpp | 系统日志 |
+| getPath.hpp | 提取路径 |
 
 ## 类接口
 
@@ -152,6 +153,29 @@ class myClass {
 
 ### 第7周
 
+#### list
+
+list容器, 基本同STLite标准要求, 文件操作相关接口如下
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| void | readIn(const std::string &fileName) | 从fileName读入数据 |
+| void | writeOut(const std::string &fileName) | 向fileName写入数据 |
+
+#### log
+
+系统日志类, 针对系统日志文件进行操作
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| / | log() | 默认构造 |
+| / | ~log() | 析构函数 |
+| void | open(const std::string &_fileName) | 打开_fileName且不清除内容 |
+| void | close() | 关闭文件且不清除内容 |
+| void | clear() | 清除文件内容 |
+| friend std::ostream & | operator<<(std::ostream &os, log &lg) | 输出日志内容 |
+| void | add(const std::string &str) | 向日志末尾新行添加语句str |
+
 #### timer
 
 时间类, 用于处理时间相关的问题
@@ -159,11 +183,32 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | timer(int _yy = 0, int _mm = 0, int _dd = 0, int _hh = 0, int _ss = 0) | 构造函数 其中ss表示分 |
-| friend std::ostream & | operator<< (std::ostream &os, const timer &obj) | 按 yy/mm/dd hh:ss 的格式输出时间信息 |
-| friend timer | operator- (const timer &obj1, const timer &obj2) | 输出obj1与obj2的时间差 要求obj2>obj1否则抛出exception()异常 要求输入尽量合法最多只能相差天数级别 |
-| friend bool | operator== (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator< (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator> (const timer &obj1, const timer &obj2) | 比较函数 |
-| friend bool | operator<= (const timer &obj1, const timer &obj2)  | 比较函数 |
-| friend bool | operator>= (const timer &obj1, const timer &obj2) | 比较函数 |
+| friend std::istream & | operator>>(std::istream &is, timer &obj) | 输入时间信息 有输入提示 |
+| friend std::ostream & | operator<<(std::ostream &os, const timer &obj) | 按 yy/mm/dd hh:ss 的格式输出时间信息 |
+| timer | operator-(const timer &other) const | 输出两时间差 若差不为正则 throw invalid_time_interval() 且通常只能在差的范围为天数级别时得到正确答案 |
+| bool | operator==(const timer &other) const | 比较函数 |
+| bool | operator<(const timer &other) const | 比较函数 |
+| bool | operator>(const timer &other) const | 比较函数 |
+| bool | operator<=(const timer &other) const | 比较函数 |
+| bool | operator>=(const timer &other) const | 比较函数 |
 
+## 模版函数
+
+#### getPath
+
+提取某运行程序所在文件夹路径
+
+| return type | method |
+|:----------:|:---------------:|
+| std::string | getPath(const std::string &fileName) |
+
+使用方法:
+```cpp
+#include <string>
+#include "getPath.hpp"
+
+int main(int argc, char *argv[]) {
+	std::string fileName = sjtu::getPath(argv[0]) + "fileName";
+	// 假若该程序路径为 D:\ab\test.exe 则 fileName 为 "D:\ab\fileName" 即同目录下文件
+}
+```
