@@ -26,10 +26,22 @@ namespace sjtu {
 			}
 		}
 		plan(const plan &other)
-			:train(other.train),startTime(other.startTime),stationNumber(other.stationNumber),status(other.status) {}
+			:train(other.train),startTime(other.startTime),stationNumber(other.stationNumber),status(other.status) {
+			for (int i = 1; i <= 3; ++i) {
+				ticketNumber[i] = new int[stationNumber + 1];
+				for (int j = 0; j <= stationNumber; ++j)
+					ticketNumber[i][j] = other.ticketNumber[i][j];
+			}
+		}
 		plan & operator=(const plan &other) {
 			if (this == &other) return *this;
 			train = other.train,startTime = other.startTime,status = other.status;
+			for (int i = 1; i <= 3; ++i) {
+				delete [] ticketNumber[i];
+				ticketNumber[i] = new int[stationNumber + 1];
+				for (int j = 0; j <= stationNumber; ++j)
+					ticketNumber[i][j] = other.ticketNumber[i][j];
+			}
 			return *this;
 		}
 		std::string getTrain() const{return train;}
