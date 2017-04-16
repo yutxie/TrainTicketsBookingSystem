@@ -11,16 +11,19 @@ namespace sjtu {
 	class plan {
 	private:
 		std::string train;
+		int stationNumber,*ticketNumber[4];
 		timer startTime;
-		int stationNumber;
 		bool status;
-		int *ticketNumber[4];
 		static const int TOTAL = 2000;
 	public:
 		plan() :train(""),startTime(),status(0) {}
 		plan(const std::string &_train,const timer &_startTime,const int _stationNumber,const bool &_status = 0)
 			:train(_train),startTime(_startTime),stationNumber(_stationNumber),status(_status) {
-			for (int i = 1; i <= 3; ++i) ticketNumber[i] = new int[stationNumber + 1];
+			for (int i = 1; i <= 3; ++i) {
+				ticketNumber[i] = new int[stationNumber + 1];
+				for (int j = 0; j <= stationNumber; ++j)
+					ticketNumber[i][j] = 0;
+			}
 		}
 		plan(const plan &other)
 			:train(other.train),startTime(other.startTime),stationNumber(other.stationNumber),status(other.status) {}
@@ -34,24 +37,26 @@ namespace sjtu {
 		int getStationNumber() const{return stationNumber;}
 		bool getStatus() const{return status;}
 		int getLeftTickets(int type,int u,int v) const{
-			if (u >= v || type < 1 || type > 3) return 0;
+			if (status == 0 || u >= v || type < 1 || type > 3) return 0;
 			int number = 0;
-			for (int i = v - 1; i >= u; --i) number += ticketNumber[type][i];
+			for (int i = v - 1; i >= u; --i) number = std::max(number,ticketNumber[type][i]);
 			return TOTAL - number;
 		}
 		void modifyStartTime(const timer &newStartTime) {startTime = newStartTime;}
 		void modifyStatus(const bool &newStatus) {status = newStatus;}
 		void query(int type,int u,int v) const{
-			if (u >= v || type < 1 || type > 3) throw invalid_input();
 			std::cout << startTime << ' ' << status << ' ' << getLeftTickets(type,u,v) << std::endl;
 		}
 		void orderTicket(int type,int u,int v) {
-			if (u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
+			if (status == 0 || u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
 			for (int i = u; i < v; ++i) ++ticketNumber[type][i];
 		}
-		void disorederTickey(int type,int u,int v) {
-			if (u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
-			for (int i = u; i < v; ++i) --ticketNumber[type][i];
+		void disorderTicket(int type,int u,int v) {
+			if (status == 0 || u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
+			for (int i = u; i < v; ++i) {
+				if (ticketNumber[type][i] == 0) throw invalid_input();
+				--ticketNumber[type][i];
+			}
 		}
 		friend std::ostream & operator<<(std::ostream &os,
 			const plan &obj) {
