@@ -81,18 +81,16 @@ public:
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | plan() | 默认构造 |
-| / | plan(const string &_train, const timer &_startTime, bool _status) | 构造函数 |
+| / | plan(const string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
 | / | plan(const plan &other) | 拷贝构造 |
 | plan & | operator=(const &other) | 赋值 |
 | string | getTrain() | 返回所属的车次 |
 | timer | getStartTime() | 返回始发时间 |
+| int | getStationNumber() | 返回所属车次包含的车站总数 |
 | bool | getStatus() | 返回发售状态 |
 | int | getLeftTickets(int type, int u, int v) | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
 | void | modifyStartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
-| void | query(int type, int u, int v) | 输出始发时间, 发售状态, 剩余票数 |
-| ticket | **orderTicket**(int type, int u, int v) | 返回订得的票 |
-| void | **disorderTicket**(const ticket &tk) | 退订该票 |
 
 注意:
 1. 所有修改均需要check发售状态为false
@@ -105,15 +103,19 @@ public:
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | ticket() | 默认构造 |
-| / | ticket(const string &_train, const timer &_sartTime, int type, int u, int v | 构造函数 其中u/v为起/终点站在该车次中的位置 |
+| / | ticket(const string &_train, const string &_userId, const string &_userName, const string &_departStation, const string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
 | string | getTrain() | 返回所属车次 |
-| timer | getStartTime() | 返回所属运行计划的始发时间 |
+| string | getUserId() | 返回用户id |
+| string | getUserName() | 返回用户名 |
+| string | getDepartStation() | 返回起点站 |
+| string | getStopStation() | 返回终点站 |
+| timer | getDepartTime() | 返回出发时间 |
+| timer | getStopTime() | 返回到达时间 |
 | int | getType() | 返回座位类型 |
 | int | getPrice() | 返回票价 |
-| friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | 输出所属车次, 始发时间, 作为类型, 票价, 起点站与终点站(, 所属用户信息) |
-| user | **getUser**() | 返回所属用户 |
+| friend std::ostream &  | operator<< (const std::ostream &os, const &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
 
 
 ### 第7周
