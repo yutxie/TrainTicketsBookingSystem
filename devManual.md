@@ -37,15 +37,16 @@ public:
 2. 若其中不包含你所需要的特殊错误类, 则自行在 myClass 中继承 exception 类声明内嵌类 myExcepiton
 3. 输出信息遵循以下格式
 
-> -----------------------------
-> class: calss_name
-> object: object_name
->
-> member_name1: value1
-> member_name2:
->     value211 value212 ...
->     value221 ...
-> -----------------------------
+```
+class: calss_name
+object: object_name
+
+member_name1: value1
+member_name2:
+    value211 value212 ...
+    value221 ...
+```
+
 
 ```cpp
 class myClass {
@@ -60,7 +61,7 @@ class myClass {
 ```
 
 ## 思路图解
-尚待更新!
+[![思路图解](https://github.com/xxxxxyt/TrainTicketsBookingSystem/blob/master/TrainMind.png "思路图解")](https://github.com/xxxxxyt/TrainTicketsBookingSystem/blob/master/TrainMind.png "思路图解")
 
 ## 文件汇总
 | file name | description |
