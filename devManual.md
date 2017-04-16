@@ -1,6 +1,6 @@
 # 开发手册
 
-## 代码相关规范
+## 模版文件相关规范
 
 1. 文件名与类名相同与规范相同
 2. 规范代码风格: 
@@ -30,6 +30,23 @@ public:
 1. 请以 dev 为基准新建名为 dev-className 的 branch 并在其中工作
 2. 代码文件保存在 source 文件夹中
 3. 完成后请以 dev 为基准 merge dev & dev-className
+
+## 错误类相关规范
+
+1. 通用的错误类模版保存在 exceptions.hpp 中, 需要 include
+2. 若其中不包含你所需要的特殊错误类, 则自行在 myClass 中继承 exception 类声明内嵌类 myExcepiton
+
+```cpp
+class myClass {
+    class myException : public exception {
+    public:
+        myException() : exception(
+	    "myException",
+	    "description"
+	    ) {}
+    };
+};
+```
 
 ## 思路图解
 尚待更新!
@@ -89,13 +106,16 @@ public:
 | int | getStationNumber() | 返回所属车次包含的车站总数 |
 | bool | getStatus() | 返回发售状态 |
 | int | getLeftTickets(int type, int u, int v) | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
+| void | orderTicket(int type, int u, int v) | 订票 修改余票信息 |
+| void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
 
 注意:
-1. 所有修改均需要check发售状态为false
+1. 所有修改均需要检查发售状态为 false
 2. 订票后记得修改余票信息
 3. 余票信息的修改与查询要求用树状数组实现
+4. 修改余票信息操作前需检验是否合法, 若不合法则 throw invalid_order_operation();
 
 #### ticket
 车票类, 记录一张车票的相关信息
