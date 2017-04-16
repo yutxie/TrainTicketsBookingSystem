@@ -31,8 +31,11 @@ namespace sjtu {
 		int getLeftTickets(int type,int u,int v) {
 			if (u >= v || type < 1 || type > 3) return 0;
 			int number = 0;
+			/*
 			for (int i = v - 1; i; i -= i & (-i)) number += ticketNumber[type][i];
 			for (int i = u - 1; i; i -= i & (-i)) number -= ticketNumber[type][i];
+			*/
+			for (int i = v - 1; i >= u; --i) number += ticketNumber[type][i];
 			return TOTAL - number;
 		}
 		void modifyStartTime(const timer &newStartTime) {startTime = newStartTime;}
@@ -43,13 +46,19 @@ namespace sjtu {
 		}
 		void orderTicket(int type,int u,int v) {
 			if (u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
+			/*
 			for (int i = u; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
 			for (int i = v; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
+			*/
+			for (int i = u; i < v; ++i) ++ticketNumber[type][i];
 		}
 		void disorederTickey(const ticket &tk) {
 			int type = tk.type,u = tk.departStation,v = tk.stopStation;
+			/*
 			for (int i = u; i <= stationNumber; i += i & (-i)) --ticketNumber[type][i];
 			for (int i = v; i <= stationNumber; i += i & (-i)) ++ticketNumber[type][i];
+			*/
+			for (int i = u; i < v; ++i) --ticketNumber[type][i];
 		}
 		friend std::ostream & operator << (std::ostream os,
 			const plan &obj) {
@@ -59,11 +68,14 @@ namespace sjtu {
 			os << "status " << obj.status << std::endl;
 			os << "ticketNumber:" << std::endl;
 			for (int i = 1; i <= 3; ++i) {
-				for (int j = 1; j <= obj.getLeftTickets(); ++j) {
+				for (int j = 1; j <= obj.stationNumber; ++j) {
+					/*
 					int number = 0;
 					for (int k = j; k; k -= k & (-k)) number += obj.ticketNumber[i][k];
 					for (int k = j - 1; k; k -= k & (-k)) number -= obj.ticketNumber[i][k];
 					os << number << ' ';
+					*/
+					os << obj.getLeftTickets()[i][j] << ' ';
 				}
 				os << std::endl;
 			}
