@@ -13,15 +13,15 @@
 namespace sjtu {
     class station {
     private:
-        string stationName;
-        string trainName;
+        std::string stationName;
+        std::string trainName;
         int stationId;
         int lengthFromStart;
         int price[4];
         timer stopTime;
         timer departTime;
     public:
-        station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTime, int _length, int _price[]) : stationName(_name), stationId(_id), trainName(_train), stopTime(_stopTime), departTime(_departTime), lengthFromStart(_length) {
+        station(const std::string &_name, int _id, const std::string &_train, const timer &_stopTime, const timer &_departTime, int _length, int _price[]) : stationName(_name), stationId(_id), trainName(_train), stopTime(_stopTime), departTime(_departTime), lengthFromStart(_length) {
             for(int i = 1; i <= 3; ++i){
                 price[i] = _price[i];
             }
@@ -52,7 +52,7 @@ namespace sjtu {
             return *this;
         }
         
-        string getName() const {
+        std::string getName() const {
             return stationName;
         }
         
@@ -60,7 +60,7 @@ namespace sjtu {
             return stationId;
         }
         
-        string getTrain() const {
+        std::string getTrain() const {
             return trainName;
         }
         
