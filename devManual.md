@@ -84,44 +84,102 @@ class myClass {
 
 ### 第9周
 
+注意:
+1. 加粗的method暂缓实现
+
 #### user
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| / | user() | 默认构造 |
+| / | user(const std::string &_id, const std::string &_name, const std::string &_password = "000000") | 构造函数 |
+| / | user(const user &other) | 拷贝构造 |
+| user & | operator=(const user &other) | 赋值函数 |
+| std::string | getId() const | 返回用户id |
+| std::string | getName() const | 返回用户名 |
+| std::string | getPassword() const | 返回用户密码 |
+| void | getTicketList(std::ostream &os) const | 输出车票列表 只需输出车票id即可 |
+| ticket | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 throw no_such_ticket(); |
+| void | modifyName(const std::string &newName) | 修改用户名 |
+| void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
+| void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 throw existed_ticket(); 若该票不属于该用户 throw not_belong_to_this_user(); |
+| void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 throw no_such_ticket(); |
+| friend std::ostream & | operator<<(std::ostream &os, const user &obj) | 输出用户id, 用户名, 密码, 已订票清单 |
+| void | **readIn(std::ifstream &file)** | 从file读入数据 |
+| void | **writeOut(std::ofstream &file)** | 向file写入数据 |
+
+注意:
+1. 已订车票清单要求用map存储, <string ticketId, ticket tk>
+2. 抛出的错误类需要自己定义为user的内嵌类
 
 #### system
 
 #### train
 
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| / | train() | 默认构造 |
+| / | train(const std::string &_id) | 构造函数 |
+| / | train(const train &other) | 拷贝构造 |
+| train & | operator=(const train &other) | 赋值函数 |
+| void | getStationList(std::ostream &os) const | 输出车站列表 |
+| station | getStation(int index) const | 返回运行线路上的第index个车站 |
+| void | getPlanList(std::ostream &os) const | 输出运行计划列表 |
+| bool | getStatusOfPlan(const timer &startTime) const | 返回某个运行计划的始发时间 |
+| int | getLeftTicketsOfPlan(const timer &startTime, int type, int u, int v) const | 返回某个运行计划的特定余票信息 |
+| void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
+| void | popStation() | 删除运行线路末尾的站点 若运行线路上不存在站点 throw no_station(); |
+| void | modifyPriceOfStation(int index, int type, int newPrice) | 修改某站点type类型座位的价格 若newPrice不合法 throw invalid_new_price(); |
+| void | insertPlan(const plan &pl) | 添加运行计划 |
+| void | deletePlan(const timer &startTime) | 删除运行计划 |
+| void | orderTicket(const timer &startTime, int type, int u, int v | 订票 继承plan类中 orderTicket() 的throw信息 |
+| void | disorderTicket(const ticket &tk) | 退票 若该票不合法 throw invalid_ticket(); |
+| void | modifyStartTimeOfPlan(const timer &startTime, const timer &newStartTime) | 修改某运行计划的始发时间 |
+| void | modifyStatusOfPlan(const timer &startTime, bool newStatus) | 修改某运行计划的发售状态 |
+| friend std::ostream & | operator=(std::ostream &os, const train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
+| void | **readIn(std::ifstream &file)** | 从file读入数据 |
+| void | **writeOut(std::ofstream &file)** | 向file写入数据 |
+
+注意:
+1. 若运行计划不存在均 throw no_such_plan();
+2. 若index不合法均 throw index_out_of_bound();
+3. 若该始发日期的运行计划已存在均 throw existed_start_date();
+
 ### 第8周
 
 #### station
+
 车站类, train的一个"内嵌类", 某个具体车次运行路线中的某个车站
 如A次列车和与其不同B次列车均会经过的上海站, 在这里认为是不同的
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | station() | 默认构造 |
-| / | station(const string &_name, int _id, const string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  构造函数 |
+| / | station(const std::string &_name, int _id, const std::string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  构造函数 |
 | / | station(const station &other) | 拷贝构造 |
 | station & | operator=(const station &other) | 赋值 |
-| string | getName() const | 返回该车站的名字 |
+| std::string | getName() const | 返回该车站的名字 |
 | int | getId() const | 返回该车站的编号 |
-| string | getTrain() const | 返回所属的车次 |
+| std::string | getTrain() const | 返回所属的车次 |
 | timer | getStopTime() const | 返回在该车次从出发到停靠在该站的时间差 |
 | timer | getDepartTime() const | 返回该车次从出发到离开该站的时间差 |
 | int | getLength() const | 返回该车次从出发到停靠在该站的行驶里程数 |
 | int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
-| friend std::ostream & | operator<<(const std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
+| friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
 
 #### plan
+
+目前读入写出尚待增加, 请暂缓调用!
 运行计划类, train的一个"内嵌类", 由所属车次与始发时间唯一确定
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | plan() | 默认构造 |
-| / | plan(const string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
+| / | plan(const std::string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
 | / | plan(const plan &other) | 拷贝构造 |
 | plan & | operator=(const &other) | 赋值 |
-| string | getTrain() const | 返回所属的车次 |
+| std::string | getTrain() const | 返回所属的车次 |
 | timer | getStartTime() const | 返回始发时间 |
 | int | getStationNumber() const | 返回所属车次包含的车站总数 |
 | bool | getStatus() const | 返回发售状态 |
@@ -130,7 +188,11 @@ class myClass {
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
-| friend std::ostream & | operator<<(const std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
+| friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
+
+
 
 注意:
 1. 所有修改均需要检查发售状态为 false
@@ -139,25 +201,29 @@ class myClass {
 4. 修改余票信息操作前需检验是否合法, 若不合法则 throw invalid_order_operation();
 
 #### ticket
+
 车票类, 记录一张车票的相关信息
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | ticket() | 默认构造 |
-| / | ticket(const string &_train, const string &_userId, const string &_userName, const string &_departStation, const string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
+| / | ticket(const std::string &_train, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
-| string | getTrain() const | 返回所属车次 |
-| string | getUserId() const | 返回用户id |
-| string | getUserName() const | 返回用户名 |
-| string | getDepartStation() const | 返回起点站 |
-| string | getStopStation() const | 返回终点站 |
+| std::string | getId() | 返回车票id |
+| std::string | getTrain() const | 返回所属车次 |
+| std::string | getUserId() const | 返回用户id |
+| std::string | getUserName() const | 返回用户名 |
+| std::string | getDepartStation() const | 返回起点站 |
+| std::string | getStopStation() const | 返回终点站 |
 | timer | getDepartTime() const | 返回出发时间 |
 | timer | getStopTime() const | 返回到达时间 |
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
-| friend std::ostream &  | operator<<(const std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
+| friend std::ostream & | operator<<(std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
 
+注意:
+1. 车票id请在构造时按照一定的构造方法生成, 要求不重, 长度为6位, 字符可用'A'-'Z'与'0'-'9'
 
 ### 第7周
 
@@ -166,12 +232,24 @@ class myClass {
 
 #### list
 
+目前读入写出尚待修改, 请暂缓调用!
 list容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| void | readIn(const std::string &fileName) | 从fileName读入数据 |
-| void | writeOut(const std::string &fileName) | 向fileName写入数据 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
+
+#### map
+
+目前尚未完成, 请暂缓调用!
+map容器, 基本同STLite标准要求, 文件操作相关接口如下
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
+
 
 #### log
 
@@ -202,6 +280,17 @@ list容器, 基本同STLite标准要求, 文件操作相关接口如下
 | bool | operator>(const timer &other) const | 比较函数 |
 | bool | operator<=(const timer &other) const | 比较函数 |
 | bool | operator>=(const timer &other) const | 比较函数 |
+
+#### vector
+
+目前尚未完成, 请暂缓调用!
+vector容器, 基本同STLite标准要求, 文件操作相关接口如下
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
+
 
 ## 模版函数
 
