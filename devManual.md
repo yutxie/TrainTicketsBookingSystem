@@ -86,6 +86,9 @@ class myClass {
 
 注意:
 1. 加粗的method暂缓实现
+2. 若xxx不存在 throw no_such_xxx();
+3. 若xxx已存在 throw existed_xxx();
+4. 错误类若在exceptions.hpp中没有则需要自己定义为内嵌类
 2. 可能有一些细节错误, 有觉得不对劲的地方请及时反馈!
 
 #### user
@@ -102,18 +105,17 @@ class myClass {
 | const std::string & | getName() const | 返回用户名 |
 | const std::string & | getPassword() const | 返回用户密码 |
 | void | getTicketList(std::ostream &os) const | 输出车票列表 只需输出车票id即可 |
-| const ticket & | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 throw no_such_ticket(); |
+| const ticket & | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 |
 | void | modifyName(const std::string &newName) | 修改用户名 |
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
-| void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 throw existed_ticket(); 若该票不属于该用户 throw not_belong_to_this_user(); |
-| void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 throw no_such_ticket(); |
+| void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
+| void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
 | friend std::ostream & | operator<<(std::ostream &os, const user &obj) | 输出用户id, 用户名, 密码, 已订票清单 |
 | void | **readIn(std::ifstream &file)** | 从file读入数据 |
 | void | **writeOut(std::ofstream &file)** | 向file写入数据 |
 
 注意:
 1. 已订车票清单要求用map存储, <string ticketId, ticket tk>
-2. 抛出的错误类需要自己定义为user的内嵌类
 
 #### system
 
@@ -121,22 +123,21 @@ class myClass {
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| / | train() |
-| std::string | getPassword() const |
-| void | getTrainList(std::ostream &os) const |
-| train & | getTrain(const std::string &trainId) |
-| void | getUserList(std::ostream &os) const |
-| user & | getUser(const std::string &userId) |
-| void | modifyPassword(const std::string &newPassword) |
-| void | inserTrain(const train &tr) |
-| void | deleteTrain(const std::string &trainId) |
-| void | insertUser(const user &us) |
-| void | deleteUser(const std::string &userId) |
+| / | train() | 默认构造 |
+| std::string | getPassword() const | 返回系统密码 |
+| void | getTrainList(std::ostream &os) const | 输出车次列表 |
+| train & | getTrain(const std::string &trainId) | 返回编号为trainId的车次 |
+| void | getUserList(std::ostream &os) const | 输出用户列表 |
+| user & | getUser(const std::string &userId) | 返回用户id为userId的用户 |
+| void | modifyPassword(const std::string &newPassword) | 修改系统密码 |
+| void | inserTrain(const train &tr) | 添加车次 |
+| void | deleteTrain(const std::string &trainId) | 删除车次 |
+| void | insertUser(const user &us) | 添加用户 |
+| void | deleteUser(const std::string &userId) | 删除用户 |
 
 
 注意:
-1. system类无需抛出错误, 但需处理错误
-2. 函数尚不完全, 还需更新!
+1. 函数尚不完全, 还需更新!
 
 #### train
 
@@ -153,17 +154,12 @@ class myClass {
 | void | getPlanList(std::ostream &os) const | 输出运行计划列表 |
 | plan & | getPlan(const timer &startTime) | 返回始发时间为startTime的运行计划 |
 | void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
-| void | popStation() | 删除运行线路末尾的站点 若运行线路上不存在站点 throw no_station(); |
+| void | popStation() | 删除运行线路末尾的站点 |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
 | void | deletePlan(const timer &startTime) | 删除运行计划 |
 | friend std::ostream & | operator=(std::ostream &os, const train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
 | void | **readIn(std::ifstream &file)** | 从file读入数据 |
 | void | **writeOut(std::ofstream &file)** | 向file写入数据 |
-
-注意:
-1. 若运行计划不存在均 throw no_such_plan();
-2. 若index不合法均 throw index_out_of_bound();
-3. 若该始发日期的运行计划已存在均 throw existed_start_date();
 
 ### 第8周
 
