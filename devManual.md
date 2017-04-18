@@ -124,7 +124,7 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | train() | 默认构造 |
-| std::string | getPassword() const | 返回系统密码 |
+| const std::string & | getPassword() const | 返回系统密码 |
 | void | getTrainList(std::ostream &os) const | 输出车次列表 |
 | train & | getTrain(const std::string &trainId) | 返回编号为trainId的车次 |
 | void | getUserList(std::ostream &os) const | 输出用户列表 |
