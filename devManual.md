@@ -98,11 +98,11 @@ class myClass {
 | / | user(const std::string &_id, const std::string &_name, const std::string &_password = "000000") | 构造函数 |
 | / | user(const user &other) | 拷贝构造 |
 | user & | operator=(const user &other) | 赋值函数 |
-| std::string | getId() const | 返回用户id |
-| std::string | getName() const | 返回用户名 |
-| std::string | getPassword() const | 返回用户密码 |
+| const std::string & | getId() const | 返回用户id |
+| const std::string & | getName() const | 返回用户名 |
+| const std::string & | getPassword() const | 返回用户密码 |
 | void | getTicketList(std::ostream &os) const | 输出车票列表 只需输出车票id即可 |
-| ticket | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 throw no_such_ticket(); |
+| const ticket & | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 throw no_such_ticket(); |
 | void | modifyName(const std::string &newName) | 修改用户名 |
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 throw existed_ticket(); 若该票不属于该用户 throw not_belong_to_this_user(); |
@@ -124,31 +124,15 @@ class myClass {
 | / | train() |
 | std::string | getPassword() const |
 | void | getTrainList(std::ostream &os) const |
-| void | getStationListOfTrain(const std::string &trainId, std::ostream &os) const |
-| station | getStationOfTrain(const std::string &trainId, int index) const | 返回运行线路上的第index个车站 |
-| void | getPlanListOfTrain(const std::string &trainId, std::ostream &os) const |
-| bool | getStatusOfPlanOfTrain(const std::string &trainId, const timer &startTime) const | 返回某个运行计划的始发时间 |
-| int | getLeftTicketsOfPlanOfTrain(const std::string &trainId, const timer &startTime, int type, int u, int v) const | 返回某个运行计划的特定余票信息 |
+| train & | getTrain(const std::string &trainId) |
 | void | getUserList(std::ostream &os) const |
-| std::string | getNameOfUser(const std::string &userId) const |
-| std::string | getPasswordOfUser(const std::string &userId) const |
-| void | getTicketListOfUser(const std::string &userId) const |
-| ticket | getTicket(const std::string &userId, const std::string &ticketId) const | 返回用户所订的某张车票 |
-| void | getLog() const |
+| user & | getUser(const std::string &userId) |
 | void | modifyPassword(const std::string &newPassword) |
 | void | inserTrain(const train &tr) |
 | void | deleteTrain(const std::string &trainId) |
-| void | pushStationOfTrain(const std::string &trainId, const station &st) |
-| void | popStationOfTrain(const std::string &trainId) |
-| void | modifyPriceOfStationOfTrain(const std::string &trainId, int index, int type, int newPrice) | 修改某站点type类型座位的价格 |
-| void | insertPlanOfTrain(const std::string &trainId, const plan &pl) | 添加运行计划 |
-| void | deletePlanOfTrain(const std::string &trainId, const timer &startTime) | 删除运行计划 |
-| void | modifyStartTimeOfPlanOfTrain(const std::string &trainId, const timer &startTime, const timer &newStartTime) | 修改某运行计划的始发时间 |
-| void | modifyStatusOfPlanOfTrain(const std::string &trainId, const timer &startTime, bool newStatus) | 修改某运行计划的发售状态 |
 | void | insertUser(const user &us) |
 | void | deleteUser(const std::string &userId) |
-| void | modifyNameOfUser(const std::string &userId, const std::string &newName) | 修改用户名 |
-| void | modifyPasswordOfUser(const std::string &userId, const std::string &newPassword) | 修改用户密码 |
+
 
 注意:
 1. system类无需抛出错误, 但需处理错误
@@ -165,19 +149,13 @@ class myClass {
 | / | train(const train &other) | 拷贝构造 |
 | train & | operator=(const train &other) | 赋值函数 |
 | void | getStationList(std::ostream &os) const | 输出车站列表 |
-| station | getStation(int index) const | 返回运行线路上的第index个车站 |
+| station & | getStation(int index) | 返回运行线路上的第index个车站 |
 | void | getPlanList(std::ostream &os) const | 输出运行计划列表 |
-| bool | getStatusOfPlan(const timer &startTime) const | 返回某个运行计划的始发时间 |
-| int | getLeftTicketsOfPlan(const timer &startTime, int type, int u, int v) const | 返回某个运行计划的特定余票信息 |
+| plan & | getPlan(const timer &startTime) | 返回始发时间为startTime的运行计划 |
 | void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
 | void | popStation() | 删除运行线路末尾的站点 若运行线路上不存在站点 throw no_station(); |
-| void | modifyPriceOfStation(int index, int type, int newPrice) | 修改某站点type类型座位的价格 若newPrice不合法 throw invalid_new_price(); |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
 | void | deletePlan(const timer &startTime) | 删除运行计划 |
-| void | orderTicket(const timer &startTime, int type, int u, int v | 订票 继承plan类中 orderTicket() 的throw信息 |
-| void | disorderTicket(const ticket &tk) | 退票 若该票不合法 throw invalid_ticket(); |
-| void | modifyStartTimeOfPlan(const timer &startTime, const timer &newStartTime) | 修改某运行计划的始发时间 |
-| void | modifyStatusOfPlan(const timer &startTime, bool newStatus) | 修改某运行计划的发售状态 |
 | friend std::ostream & | operator=(std::ostream &os, const train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
 | void | **readIn(std::ifstream &file)** | 从file读入数据 |
 | void | **writeOut(std::ofstream &file)** | 向file写入数据 |
@@ -200,11 +178,11 @@ class myClass {
 | / | station(const std::string &_name, int _id, const std::string &_train, const timer &_stopTime, const timer &_departTIme, int _length, int _price[]) |  构造函数 |
 | / | station(const station &other) | 拷贝构造 |
 | station & | operator=(const station &other) | 赋值 |
-| std::string | getName() const | 返回该车站的名字 |
+| const std::string & | getName() const | 返回该车站的名字 |
 | int | getId() const | 返回该车站的编号 |
-| std::string | getTrain() const | 返回所属的车次 |
-| timer | getStopTime() const | 返回在该车次从出发到停靠在该站的时间差 |
-| timer | getDepartTime() const | 返回该车次从出发到离开该站的时间差 |
+| const std::string & | getTrain() const | 返回所属的车次 |
+| const timer & | getStopTime() const | 返回在该车次从出发到停靠在该站的时间差 |
+| const timer & | getDepartTime() const | 返回该车次从出发到离开该站的时间差 |
 | int | getLength() const | 返回该车次从出发到停靠在该站的行驶里程数 |
 | int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
@@ -221,8 +199,8 @@ class myClass {
 | / | plan(const std::string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
 | / | plan(const plan &other) | 拷贝构造 |
 | plan & | operator=(const &other) | 赋值 |
-| std::string | getTrain() const | 返回所属的车次 |
-| timer | getStartTime() const | 返回始发时间 |
+| const std::string & | getTrain() const | 返回所属的车次 |
+| const timer & | getStartTime() const | 返回始发时间 |
 | int | getStationNumber() const | 返回所属车次包含的车站总数 |
 | bool | getStatus() const | 返回发售状态 |
 | int | getLeftTickets(int type, int u, int v) const | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
@@ -250,14 +228,14 @@ class myClass {
 | / | ticket(const std::string &_train, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
-| std::string | getId() | 返回车票id |
-| std::string | getTrain() const | 返回所属车次 |
-| std::string | getUserId() const | 返回用户id |
-| std::string | getUserName() const | 返回用户名 |
-| std::string | getDepartStation() const | 返回起点站 |
-| std::string | getStopStation() const | 返回终点站 |
-| timer | getDepartTime() const | 返回出发时间 |
-| timer | getStopTime() const | 返回到达时间 |
+| const std::string & | getId() | 返回车票id |
+| const std::string & | getTrain() const | 返回所属车次 |
+| const std::string & | getUserId() const | 返回用户id |
+| const std::string & | getUserName() const | 返回用户名 |
+| const std::string & | getDepartStation() const | 返回起点站 |
+| const std::string & | getStopStation() const | 返回终点站 |
+| const timer & | getDepartTime() const | 返回出发时间 |
+| const timer & | getStopTime() const | 返回到达时间 |
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
 | friend std::ostream & | operator<<(std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
