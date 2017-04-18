@@ -86,8 +86,11 @@ class myClass {
 
 注意:
 1. 加粗的method暂缓实现
+2. 可能有一些细节错误, 有觉得不对劲的地方请及时反馈!
 
 #### user
+
+用户类, 保存用户信息及已订车票列表
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
@@ -114,7 +117,46 @@ class myClass {
 
 #### system
 
+订票系统类, 系统功能的主要承担者
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| / | train() |
+| std::string | getPassword() const |
+| void | getTrainList(std::ostream &os) const |
+| void | getStationListOfTrain(const std::string &trainId, std::ostream &os) const |
+| station | getStationOfTrain(const std::string &trainId, int index) const | 返回运行线路上的第index个车站 |
+| void | getPlanListOfTrain(const std::string &trainId, std::ostream &os) const |
+| bool | getStatusOfPlanOfTrain(const std::string &trainId, const timer &startTime) const | 返回某个运行计划的始发时间 |
+| int | getLeftTicketsOfPlanOfTrain(const std::string &trainId, const timer &startTime, int type, int u, int v) const | 返回某个运行计划的特定余票信息 |
+| void | getUserList(std::ostream &os) const |
+| std::string | getNameOfUser(const std::string &userId) const |
+| std::string | getPasswordOfUser(const std::string &userId) const |
+| void | getTicketListOfUser(const std::string &userId) const |
+| ticket | getTicket(const std::string &userId, const std::string &ticketId) const | 返回用户所订的某张车票 |
+| void | getLog() const |
+| void | modifyPassword(const std::string &newPassword) |
+| void | inserTrain(const train &tr) |
+| void | deleteTrain(const std::string &trainId) |
+| void | pushStationOfTrain(const std::string &trainId, const station &st) |
+| void | popStationOfTrain(const std::string &trainId) |
+| void | modifyPriceOfStationOfTrain(const std::string &trainId, int index, int type, int newPrice) | 修改某站点type类型座位的价格 |
+| void | insertPlanOfTrain(const std::string &trainId, const plan &pl) | 添加运行计划 |
+| void | deletePlanOfTrain(const std::string &trainId, const timer &startTime) | 删除运行计划 |
+| void | modifyStartTimeOfPlanOfTrain(const std::string &trainId, const timer &startTime, const timer &newStartTime) | 修改某运行计划的始发时间 |
+| void | modifyStatusOfPlanOfTrain(const std::string &trainId, const timer &startTime, bool newStatus) | 修改某运行计划的发售状态 |
+| void | insertUser(const user &us) |
+| void | deleteUser(const std::string &userId) |
+| void | modifyNameOfUser(const std::string &userId, const std::string &newName) | 修改用户名 |
+| void | modifyPasswordOfUser(const std::string &userId, const std::string &newPassword) | 修改用户密码 |
+
+注意:
+1. system类无需抛出错误, 但需处理错误
+2. 函数尚不完全, 还需更新!
+
 #### train
+
+车次类, 保存车次信息, 运行线路车站信息及运行计划信息
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
@@ -191,8 +233,6 @@ class myClass {
 | friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
 | void | readIn(std::ifstream &file) | 从file读入数据 |
 | void | writeOut(std::ofstream &file) | 向file写入数据 |
-
-
 
 注意:
 1. 所有修改均需要检查发售状态为 false
