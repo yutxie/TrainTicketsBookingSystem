@@ -38,7 +38,6 @@ private:
     node * head;
     node * tail;
     int currentlength;
-	std::fstream io;
 public:
     /**
      * TODO
@@ -412,29 +411,21 @@ public:
      * !!! Pay attentions
      *   In STL this operator does not check the boundary but I want you to do.
      */
-	void readIn(const std::string &fileName) {
+	void readIn(std::ifstream &file) {
 		if(!empty()) throw container_is_not_empty();
-		io.open(fileName, std::fstream::in);
-		if(!io) throw no_such_file();
 		int _currentlength;
-		io.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
+		file.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
 		T x;
-		//std::cout << _currentlength << std::endl;
 		for(int i = 0; i < _currentlength; ++i) {
-			io.read(reinterpret_cast<char *> (&x), sizeof(T));
-			//std::cout << x << std::endl;
+			file.read(reinterpret_cast<char *> (&x), sizeof(T));
 			push_back(x);
 		}
 	}
-	void writeOut(const std::string &fileName) {
-		if(io) io.close();
-		io.open(fileName, std::fstream::out | std::fstream::binary);
-		if(!io) throw no_such_file();
-		io.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
+	void writeOut(std::ofstream &file) {
+		file.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
 		node *ptr = head -> next;
 		while(ptr != tail) {
-			std::cout << ptr -> value << std::endl;
-			io.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
+			file.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
 			ptr = ptr -> next;
 		}
 	}
