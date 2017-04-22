@@ -104,15 +104,15 @@ class myClass {
 | const std::string & | getId() const | 返回用户id |
 | const std::string & | getName() const | 返回用户名 |
 | const std::string & | getPassword() const | 返回用户密码 |
-| void | getTicketList(std::ostream &os) const | 输出车票列表 只需输出车票id即可 |
+| void | getTicketList(std::ostream &os) | 输出车票列表 只需输出车票id即可 |
 | const ticket & | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 |
 | void | modifyName(const std::string &newName) | 修改用户名 |
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
 | void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
-| friend std::ostream & | operator<<(std::ostream &os, const user &obj) | 输出用户id, 用户名, 密码, 已订票清单 |
-| void | **readIn(std::ifstream &file)** | 从file读入数据 |
-| void | **writeOut(std::ofstream &file)** | 向file写入数据 |
+| friend std::ostream & | operator<<(std::ostream &os, user &obj) | 输出用户id, 用户名, 密码, 已订票清单 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 注意:
 1. 已订车票清单要求用map存储, <string ticketId, ticket tk>
@@ -125,9 +125,9 @@ class myClass {
 |:----------:|:---------------:|:----------:|
 | / | train() | 默认构造 |
 | const std::string & | getPassword() const | 返回系统密码 |
-| void | getTrainList(std::ostream &os) const | 输出车次列表 |
+| void | getTrainList(std::ostream &os) | 输出车次列表 |
 | train & | getTrain(const std::string &trainId) | 返回编号为trainId的车次 |
-| void | getUserList(std::ostream &os) const | 输出用户列表 |
+| void | getUserList(std::ostream &os) | 输出用户列表 |
 | user & | getUser(const std::string &userId) | 返回用户id为userId的用户 |
 | void | modifyPassword(const std::string &newPassword) | 修改系统密码 |
 | void | inserTrain(const train &tr) | 添加车次 |
@@ -151,15 +151,15 @@ class myClass {
 | train & | operator=(const train &other) | 赋值函数 |
 | void | getStationList(std::ostream &os) const | 输出车站列表 |
 | station & | getStation(int index) | 返回运行线路上的第index个车站 |
-| void | getPlanList(std::ostream &os) const | 输出运行计划列表 |
+| void | getPlanList(std::ostream &os) | 输出运行计划列表 |
 | plan & | getPlan(const timer &startTime) | 返回始发时间为startTime的运行计划 |
 | void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
 | void | popStation() | 删除运行线路末尾的站点 |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
 | void | deletePlan(const timer &startTime) | 删除运行计划 |
-| friend std::ostream & | operator=(std::ostream &os, const train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
-| void | **readIn(std::ifstream &file)** | 从file读入数据 |
-| void | **writeOut(std::ofstream &file)** | 向file写入数据 |
+| friend std::ostream & | operator<<(std::ostream &os, train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) const | 向file写入数据 |
 
 注意:
 1. 运行线路上的车站从0开始编号, 即起点站对于当前车次来说是第0个车站
@@ -258,6 +258,8 @@ list容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 相关代码参考:
 ```cpp
+#include <fstream>
+
 void readIn(std::ifstream &file) {
 	if(!empty()) throw container_is_not_empty();
 	int _currentlength;
@@ -297,7 +299,6 @@ map容器, 基本同STLite标准要求, 文件操作相关接口如下
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | log() | 默认构造 |
-| / | ~log() | 析构函数 |
 | void | open(const std::string &_fileName) | 打开_fileName且不清除内容 |
 | void | close() | 关闭文件且不清除内容 |
 | void | clear() | 清除文件内容 |
