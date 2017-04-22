@@ -246,13 +246,35 @@ class myClass {
 
 #### list
 
-目前读入写出尚待修改, 请暂缓调用!
 list容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | void | readIn(std::ifstream &file) | 从file读入数据 |
 | void | writeOut(std::ofstream &file) | 向file写入数据 |
+
+相关代码参考:
+```cpp
+void readIn(std::ifstream &file) {
+	if(!empty()) throw container_is_not_empty();
+	int _currentlength;
+	file.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
+	T x;
+	for(int i = 0; i < _currentlength; ++i) {
+		file.read(reinterpret_cast<char *> (&x), sizeof(T));
+		push_back(x);
+	}
+}
+void writeOut(std::ofstream &file) {
+	file.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
+	node *ptr = head -> next;
+	while(ptr != tail) {
+		file.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
+		ptr = ptr -> next;
+	}
+}
+
+```
 
 #### map
 
