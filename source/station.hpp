@@ -56,7 +56,7 @@ namespace sjtu {
             return *this;
         }
         
-        std::string getName() const {
+        const std::string & getName() const {
             return stationName;
         }
         
@@ -64,7 +64,7 @@ namespace sjtu {
             return stationId;
         }
         
-        std::string getTrain() const {
+        const std::string & getTrain() const {
             return trainName;
         }
         
@@ -76,11 +76,11 @@ namespace sjtu {
             return price[type];
         }
         
-        sjtu::timer getStopTime() const {
+        const sjtu::timer & getStopTime() const {
             return stopTime;
         }
         
-        sjtu::timer getDepartTime() const {
+        const sjtu::timer & getDepartTime() const {
             return departTime;
         }
         
