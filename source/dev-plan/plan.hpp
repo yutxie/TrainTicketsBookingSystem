@@ -43,8 +43,8 @@ namespace sjtu {
 			}
 			return *this;
 		}
-		std::string getTrain() const{return train;}
-		timer getStartTime() const{return startTime;}
+		const std::string & getTrain() const{return train;}
+		const timer & getStartTime() const{return startTime;}
 		int getStationNumber() const{return stationNumber;}
 		bool getStatus() const{return status;}
 		int getLeftTickets(int type,int u,int v) const{
