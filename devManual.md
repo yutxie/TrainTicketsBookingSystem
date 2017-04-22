@@ -161,6 +161,9 @@ class myClass {
 | void | **readIn(std::ifstream &file)** | 从file读入数据 |
 | void | **writeOut(std::ofstream &file)** | 向file写入数据 |
 
+注意:
+1. 运行线路上的车站从0开始编号, 即起点站对于当前车次来说是第0个车站
+
 ### 第8周
 
 #### station
