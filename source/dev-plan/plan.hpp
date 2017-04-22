@@ -2,7 +2,6 @@
 #define SJTU_PLAN_HPP
 #include "exceptions.hpp"
 #include "timer.hpp"
-
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -90,6 +89,13 @@ namespace sjtu {
 				for (int i = 1; i <= 3; ++i)
 					delete [] ticketNumber[i];
 			}
+		}
+		
+		void readIn(std::ifstream &file) {
+			
+		}
+		void writeOut(std::ofstream &file) {
+			
 		}
 	};
 }
