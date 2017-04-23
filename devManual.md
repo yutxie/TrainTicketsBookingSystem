@@ -135,9 +135,9 @@ class myClass {
 | void | insertUser(const user &us) | 添加用户 |
 | void | deleteUser(const std::string &userId) | 删除用户 |
 
-
 注意:
 1. 函数尚不完全, 还需更新!
+2. 订票时要求生成一唯一的8位车票id, 可用字符: 'A'-'Z', '0'-'9'
 
 #### train
 
@@ -224,7 +224,7 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | ticket() | 默认构造 |
-| / | ticket(const std::string &_train, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
+| / | ticket(const std::string &_id, const std::string &_train, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const timer &_departTime, const timer &_stopTime, int _type, int _price) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
 | const std::string & | getId() | 返回车票id |
@@ -238,9 +238,6 @@ class myClass {
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
 | friend std::ostream & | operator<<(std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
-
-注意:
-1. 车票id请在构造时按照一定的构造方法生成, 要求不重, 长度为6位, 字符可用'A'-'Z'与'0'-'9'
 
 ### 第7周
 
