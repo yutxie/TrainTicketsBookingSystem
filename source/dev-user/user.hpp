@@ -25,14 +25,16 @@ namespace sjtu {
             no_such_ticket() : exception(
                 "no_such_ticket",
                 "No such ticket"
-                                      ) {}
+            ) {}
         };
+        
     private:
         std::string userId;
         std::string userName;
         std::string password;
         int identity;
         sjtu::list <sjtu::ticket> ticketList;
+        
     public:
         user(){};
         
@@ -63,7 +65,6 @@ namespace sjtu {
         }
         
         void getTicketList(std::ostream &os) const {
-            
             sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
             for(int i = 0; i < ticketList.size(); ++i) {
                 os << (*it).getId() << std::endl;
@@ -83,6 +84,7 @@ namespace sjtu {
             throw no_such_ticket();
             return NULL;
         }
+        
         void modifyName(const std::string &newName) {
             userName = newName;
             return;
