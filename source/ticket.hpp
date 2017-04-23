@@ -8,6 +8,7 @@
 namespace sjtu{
 	class ticket{
 	private:
+		std::string id;
 		std::string trainId;//所属车次
 		std::string userId;//用户ID
 		std::string userName;//用户名 
@@ -20,16 +21,17 @@ namespace sjtu{
 		
 	public:
 		ticket() {}
-		ticket(const std::string &_train, const std::string &_userId, 
+		ticket(const std::string &_id, const std::string &_train, const std::string &_userId, 
 			const std::string &_userName, const std::string &_departStation,
 			const std::string &_stopStation, const timer &_departTime, 
-			const timer &_stopTime, int _seatType, int _price): 
+			const timer &_stopTime, int _seatType, int _price): id(_id), 
 			trainId(_train), userId(_userId), userName(_userName), 
 			departStation(_departStation), stopStation(_stopStation), 
 			departTime(_departTime), stopTime(_stopTime), 
 			seatType(_seatType),price(_price) {}
 		
 		ticket(const ticket &other){
+			id = other.id;
 			trainId=other.trainId;
 			userId=other.userId;
 			userName=other.userName;
@@ -42,6 +44,7 @@ namespace sjtu{
 		}
 		
 		ticket &operator=(const ticket &other){
+			id = other.id;
 			trainId=other.trainId;
 			userId=other.userId;
 			userName=other.userName;
@@ -54,31 +57,35 @@ namespace sjtu{
 			return *this;
 		}
 		
-		std::string getTrain() const {
+		const std::string & getId() const {
+			return id;
+		}
+		
+		const std::string & getTrain() const {
 			return trainId;
 		}
 		
-		std::string getUserId() const{
+		const std::string & getUserId() const{
 			return userId; 
 		}
 		
-		std::string getUserName() const{
+		const std::string & getUserName() const{
 			return userName;
 		}
 		
-		std::string getDepartStation() const{
+		const std::string & getDepartStation() const{
 			return departStation;
 		}
 		
-		std::string getStopStation() const{
+		const std::string & getStopStation() const{
 			return stopStation;
 		}
 		
-		timer getDepartTime() const{
+		const timer & getDepartTime() const{
 			return departTime;
 		}
 		
-		timer getStopTime()	const{
+		const timer & getStopTime()	const{
 			return stopTime;
 		}
 		
@@ -91,7 +98,7 @@ namespace sjtu{
 		}
 		
 	friend std::ostream& operator<<(std::ostream &os,const ticket& obj) {
-		
+		os << "id: " << obj.id << '\n';
 		os<<"trainId:\t"<<obj.trainId<<'\n';
 		os<<"userId:\t"<<obj.userId<<'\n';
 		os<<"userName:\t"<<obj.userName<<'\n';
@@ -105,21 +112,6 @@ namespace sjtu{
 	}
 			
 	};
-	
-	//friend std::ostream& operator<<(std::ostream &os,const Ticket& obj){
-	/*ticket::operator<<(std::ostream &os,const ticket& obj) {
-		os<<obj.trainId;
-		os<<obj.userId;
-		os<<obj.userName;
-		os<<obj.departStation;
-		os<<obj.stopStation;
-		os<<obj.departTime;
-		os<<obj.stopTime;
-		os<<obj.seatype;
-		os<<obj.price;
-		return price;
-	}*/
-	
 
 }
 #endif/*station_hpp*/
