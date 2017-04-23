@@ -10,8 +10,23 @@
 #define SJTU_USER_HPP
 #include "list.hpp"
 #include "ticket.hpp"
+#include "exception.hpp"
 namespace sjtu {
     class user {
+        class already_ordered : public exception {
+        public:
+            already_ordered() : exception(
+                "already_ordered",
+                "Already ordered"
+            ) {}
+        };
+        class not_ordered : public exception {
+        public:
+            not_ordered() : exception(
+                                      "not_ordered",
+                                      "Not ordered"
+                                      ) {}
+        };
     private:
         std::string userId;
         std::string userName;
@@ -69,7 +84,7 @@ namespace sjtu {
         }
         
         void orderTicket(const ticket &tk) {
-            
+            ticketList.push_back
         }
         friend std::ostream& operator <<(std::ostream &os, const user &obj) {
             os << "userId: " << obj.userId << std::endl;
