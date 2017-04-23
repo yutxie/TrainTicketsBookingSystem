@@ -13,18 +13,18 @@
 #include "exception.hpp"
 namespace sjtu {
     class user {
-        class already_ordered : public exception {
+        class existed_ticket : public exception {
         public:
-            already_ordered() : exception(
-                "already_ordered",
-                "Already ordered"
+            existed_ticket() : exception(
+                "existed_ticket",
+                "Existed ticket"
             ) {}
         };
-        class not_ordered : public exception {
+        class no_such_ticket : public exception {
         public:
-            not_ordered() : exception(
-                                      "not_ordered",
-                                      "Not ordered"
+            no_such_ticket() : exception(
+                "no_such_ticket",
+                "No such ticket"
                                       ) {}
         };
     private:
@@ -63,15 +63,25 @@ namespace sjtu {
         }
         
         void getTicketList(std::ostream &os) const {
+            
+            sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
             for(int i = 0; i < ticketList.size(); ++i) {
-                os << "ticketList: " << ticketList[i].getId() << " ";
+                os << (*it).getId() << std::endl;
+                ++it;
             }
             os << std::endl;
         }
         
-        //较难实现
         const ticket & getTicket(const std::string &ticketId)const {
-            for()
+            sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
+            for(int i = 0; i < ticketList.size(); ++i) {
+                if(ticketId == (*iterator).getId) {
+                    return (*iterator);
+                }
+                ++it;
+            }
+            throw no_such_ticket();
+            return NULL;
         }
         void modifyName(const std::string &newName) {
             userName = newName;
@@ -84,20 +94,50 @@ namespace sjtu {
         }
         
         void orderTicket(const ticket &tk) {
-            ticketList.push_back
+            sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
+            for(int i = 0; i < ticketList.size(); ++i) {
+                if(tk.getId() == (*it).getId) {
+                    throw existed_ticket();
+                    return;
+                }
+                ++it;
+            }
+            ticketList.push_back(tk);
         }
+        
+        void disorderTicket(const std::string &ticketId) {
+            sjtu::list<ticket>::iterator it = ticketList.begin();
+            for(int i = 0; i < ticketList.size(); ++i) {
+                if((*it).getId() == ticketId) {
+                    ticketList.erase(it);
+                    return;
+                }
+                ++it;
+            }
+            throw no_such_ticket();
+            return;
+        }
+        
         friend std::ostream& operator <<(std::ostream &os, const user &obj) {
             os << "userId: " << obj.userId << std::endl;
             os << "userName: " << obj.userName << std::endl;
             os << "password: " << obj.password << std::endl;
-            os << "identity: " << obj.identity << std::endl;
-            os << "bookedTicket: ";
+            os << "ticketList: ";
+            sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
             for(int i = 0; i < obj.bookedTicket.size(); ++i) {
-                os << obj.bookedTicket[i] << std::endl;
+                os << (*it) << std::endl;
+                ++it;
             }
             return os;
         }
-        bookInquiry
+        
+        void readIn(std::ifstream &file) {
+            
+        }
+        
+        void writeOut(std::ofstream &file) {
+            
+        }
     };
 }
 
