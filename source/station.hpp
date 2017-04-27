@@ -10,6 +10,8 @@
 #define SJTU_STATION_HPP
 #include "exceptions.hpp"
 #include "timer.hpp"
+#include <fstream>
+#include "rwString.hpp"
 #include <iostream>
 namespace sjtu {
     class station {
@@ -99,6 +101,41 @@ namespace sjtu {
             os << "price: " << obj.price[1] << " " << obj.price[2] << " " << obj.price[3] << std::endl;
             return os;
         }
+		
+		// read in & write out by xxxxxyt
+		
+		/*
+		std::string stationName;
+        int stationId;
+        std::string trainName;
+        sjtu::timer stopTime;
+        sjtu::timer departTime;
+        int lengthFromStart;
+        int price[4];
+		*/
+		
+		void readIn(std::ifstream &file) {
+			readString(file, stationName);
+			file.read(reinterpret_cast<char *> (&stationId), sizeof(int));
+			readString(file, trainName);
+			file.read(reinterpret_cast<char *> (&stopTime), sizeof(timer));
+			file.read(reinterpret_cast<char *> (&departTime), sizeof(timer));
+			file.read(reinterpret_cast<char *> (&lengthFromStart), sizeof(int));
+			for(int i = 1; i <= 3; ++i) {
+				file.read(reinterpret_cast<char *> (&price[i]), sizeof(int));
+			}
+		}
+		void writeOut(std::ofstream &file) {
+			writeString(file, stationName);
+			file.write(reinterpret_cast<const char *> (&stationId), sizeof(int));
+			writeString(file, trainName);
+			file.write(reinterpret_cast<const char *> (&stopTime), sizeof(timer));
+			file.write(reinterpret_cast<const char *> (&departTime), sizeof(timer));
+			file.write(reinterpret_cast<const char *> (&lengthFromStart), sizeof(int));
+			for(int i = 1; i <= 3; ++i) {
+				file.write(reinterpret_cast<const char *> (&price[i]), sizeof(int));
+			}
+		}
     };
 }
 

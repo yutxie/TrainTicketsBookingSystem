@@ -99,6 +99,8 @@ namespace sjtu {
             os << "price: " << obj.price[1] << " " << obj.price[2] << " " << obj.price[3] << std::endl;
             return os;
         }
+		
+		std::ostream &
     };
 }
 

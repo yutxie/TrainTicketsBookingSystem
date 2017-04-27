@@ -3,8 +3,11 @@
 #define SJTU_TICKET_HPP
 
 #include <string>
+#include <fstream>
 #include "exceptions.hpp"
 #include "timer.hpp"
+#include "rwString.hpp"
+
 namespace sjtu{
 	class ticket{
 	private:
@@ -97,20 +100,48 @@ namespace sjtu{
 			return price;
 		}
 		
-	friend std::ostream& operator<<(std::ostream &os,const ticket& obj) {
-		os << "id: " << obj.id << '\n';
-		os<<"trainId:\t"<<obj.trainId<<'\n';
-		os<<"userId:\t"<<obj.userId<<'\n';
-		os<<"userName:\t"<<obj.userName<<'\n';
-		os<<"departStation:\t"<<obj.departStation<<'\n';
-		os<<"stopStation:\t"<<obj.stopStation<<'\n';
-		os<<"departTime:\t"<<obj.departTime<<'\n';
-		os<<"stopTime:\t"<<obj.stopTime<<'\n';
-		os<<"seatType:\t"<<obj.seatType<<'\n';
-		os<<"price:\t"<<obj.price<<'\n';
-		return os;
-	}
-			
+		friend std::ostream& operator<<(std::ostream &os,const ticket& obj) {
+			os << "id: " << obj.id << '\n';
+			os<<"trainId:\t"<<obj.trainId<<'\n';
+			os<<"userId:\t"<<obj.userId<<'\n';
+			os<<"userName:\t"<<obj.userName<<'\n';
+			os<<"departStation:\t"<<obj.departStation<<'\n';
+			os<<"stopStation:\t"<<obj.stopStation<<'\n';
+			os<<"departTime:\t"<<obj.departTime<<'\n';
+			os<<"stopTime:\t"<<obj.stopTime<<'\n';
+			os<<"seatType:\t"<<obj.seatType<<'\n';
+			os<<"price:\t"<<obj.price<<'\n';
+			return os;
+		}
+		
+		void readIn(std::ifstream &file) {
+			ticket &now = *this;
+			file.read(reinterpret_cast<char *> (&now), sizeof(ticket));
+			std::string str;
+			file.read(reinterpret_cast<char *> (&str), sizeof(std::string));
+			readString(file, id);
+			readString(file, trainId);
+			readString(file, userId);
+			readString(file, userName);
+			readString(file, departStation);
+			readString(file, stopStation);
+			file.read(reinterpret_cast<char *> (&departTime), sizeof(timer));
+			file.read(reinterpret_cast<char *> (&stopTime), sizeof(timer));
+			file.read(reinterpret_cast<char *> (&seatType), sizeof(int));
+			file.read(reinterpret_cast<char *> (&price), sizeof(int));
+		}
+		void writeOut(std::ofstream &file) {
+			writeString(file, id);
+			writeString(file, trainId);
+			writeString(file, userId);
+			writeString(file, userName);
+			writeString(file, departStation);
+			writeString(file, stopStation);
+			file.write(reinterpret_cast<const char *> (&departTime), sizeof(timer));
+			file.write(reinterpret_cast<const char *> (&stopTime), sizeof(timer));
+			file.write(reinterpret_cast<const char *> (&seatType), sizeof(int));
+			file.write(reinterpret_cast<const char *> (&price), sizeof(int));
+		}
 	};
 
 }
