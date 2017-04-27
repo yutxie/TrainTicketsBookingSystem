@@ -134,6 +134,8 @@ class myClass {
 | void | deleteTrain(const std::string &trainId) | 删除车次 |
 | void | insertUser(const user &us) | 添加用户 |
 | void | deleteUser(const std::string &userId) | 删除用户 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 注意:
 1. 函数尚不完全, 还需更新!
@@ -186,6 +188,8 @@ class myClass {
 | int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
 | friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 #### plan
 
@@ -238,6 +242,8 @@ class myClass {
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
 | friend std::ostream & | operator<<(std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
+| void | readIn(std::ifstream &file) | 从file读入数据 |
+| void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 ### 第7周
 
@@ -330,6 +336,15 @@ vector容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 
 ## 模版函数
+
+#### rwString
+
+从或向文件流读入或写出string类变量
+
+| return type | method |
+|:----------:|:---------------:|
+| void | readString(std::ifstream &file, std::string &str) |
+| void | writeString(std::ofstream &file, const std::string &str) |
 
 #### getPath
 
