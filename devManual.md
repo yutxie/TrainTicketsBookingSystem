@@ -134,12 +134,24 @@ class myClass {
 | void | deleteTrain(const std::string &trainId) | 删除车次 |
 | void | insertUser(const user &us) | 添加用户 |
 | void | deleteUser(const std::string &userId) | 删除用户 |
+| bool | loginAsAdmin(const std::string &_password) const | 作为管理员登录 判断密码是否正确 |
+| void | initialize() | 初始化系统 包括重置系统密码 |
+| void | importTrain(std::ifstream &file) | 从file导入车次信息 |
+| void | query(const std::string &departStation, const std::string &stopStation, const timer &departTime) | 查询余票信息 |
+| const ticket & | orderTicket(const user &us, const std::string &trainId, const timer &departTime, int u, int v, int type) | 订票 |
+| void | disorderTicket(const ticket &tk) | 退票 |
+| bool | loginAsUser(const std::string &userId, const std::string &userPassword) | 作为用户登录 判断密码是否正确 |
+| user & | signUpUser(const std::string &userId, const std::string &userPassword, const std::string &userName) | 注册用户 |
+| void | **work(const std::string &str)** | 解析str内容并执行相应命令 同时将操作写入日志 |
+| void | writeOutLog(std::ostream &os) | 向os写出系统日志 |
 | void | readIn(std::ifstream &file) | 从file读入数据 |
 | void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 注意:
 1. 函数尚不完全, 还需更新!
-2. 订票时要求生成一唯一的8位车票id, 可用字符: 'A'-'Z', '0'-'9'
+2. 订票时要求生成一唯一的8位车票id, 可用字符: 'A'-'Z', '0'-'9'												   
+3. 车次列表要求用map存储, <string trainId, train tr>
+4. 用户列表要求用map存储, <string userId, user us>
 
 #### train
 
