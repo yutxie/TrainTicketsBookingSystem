@@ -134,12 +134,24 @@ class myClass {
 | void | deleteTrain(const std::string &trainId) | 删除车次 |
 | void | insertUser(const user &us) | 添加用户 |
 | void | deleteUser(const std::string &userId) | 删除用户 |
+| bool | loginAsAdmin(const std::string &_password) const | 作为管理员登录 判断密码是否正确 |
+| void | initialize() | 初始化系统 包括重置系统密码 |
+| void | importTrain(std::ifstream &file) | 从file导入车次信息 |
+| void | query(const std::string &departStation, const std::string &stopStation, const timer &departTime) | 查询余票信息 |
+| const ticket & | orderTicket(const user &us, const std::string &trainId, const timer &departTime, int u, int v, int type) | 订票 |
+| void | disorderTicket(const ticket &tk) | 退票 |
+| bool | loginAsUser(const std::string &userId, const std::string &userPassword) | 作为用户登录 判断密码是否正确 |
+| user & | signUpUser(const std::string &userId, const std::string &userPassword, const std::string &userName) | 注册用户 |
+| void | **work(const std::string &str)** | 解析str内容并执行相应命令 同时将操作写入日志 |
+| void | writeOutLog(std::ostream &os) | 向os写出系统日志 |
 | void | readIn(std::ifstream &file) | 从file读入数据 |
 | void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 注意:
 1. 函数尚不完全, 还需更新!
 2. 订票时要求生成一唯一的8位车票id, 可用字符: 'A'-'Z', '0'-'9'
+3. 车次列表要求用map存储, <string trainId, train tr>
+4. 用户列表要求用map存储, <string userId, user us>
 
 #### train
 
@@ -154,11 +166,11 @@ class myClass {
 | void | getStationList(std::ostream &os) const | 输出车站列表 |
 | station & | getStation(int index) | 返回运行线路上的第index个车站 |
 | void | getPlanList(std::ostream &os) | 输出运行计划列表 |
-| plan & | getPlan(const timer &startTime) | 返回始发时间为startTime的运行计划 |
+| plan & | getPlan(const timer &departTime) | 返回始发时间为departTime的运行计划 |
 | void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
 | void | popStation() | 删除运行线路末尾的站点 |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
-| void | deletePlan(const timer &startTime) | 删除运行计划 |
+| void | deletePlan(const timer &departTime) | 删除运行计划 |
 | friend std::ostream & | operator<<(std::ostream &os, train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
 | void | readIn(std::ifstream &file) | 从file读入数据 |
 | void | writeOut(std::ofstream &file) const | 向file写入数据 |
@@ -199,17 +211,17 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | plan() | 默认构造 |
-| / | plan(const std::string &_train, const timer &_startTime, int stationNumber, bool _status) | 构造函数 |
+| / | plan(const std::string &_train, const timer &_departTime, int stationNumber, bool _status) | 构造函数 |
 | / | plan(const plan &other) | 拷贝构造 |
 | plan & | operator=(const &other) | 赋值 |
 | const std::string & | getTrain() const | 返回所属的车次 |
-| const timer & | getStartTime() const | 返回始发时间 |
+| const timer & | getDepartTime() const | 返回始发时间 |
 | int | getStationNumber() const | 返回所属车次包含的车站总数 |
 | bool | getStatus() const | 返回发售状态 |
 | int | getLeftTickets(int type, int u, int v) const | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
 | void | orderTicket(int type, int u, int v) | 订票 修改余票信息 |
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
-| void | modifyStartTime() | 修改始发时间 |
+| void | modifyDepartTime() | 修改始发时间 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
 | friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
 | void | readIn(std::ifstream &file) | 从file读入数据 |
