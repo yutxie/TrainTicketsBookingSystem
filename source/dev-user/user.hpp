@@ -10,9 +10,11 @@
 #define SJTU_USER_HPP
 #include "list.hpp"
 #include "ticket.hpp"
-#include "exception.hpp"
+#include "exceptions.hpp"
+#include "rwString.hpp"
 namespace sjtu {
     class user {
+    private:
         class existed_ticket : public exception {
         public:
             existed_ticket() : exception(
@@ -20,6 +22,7 @@ namespace sjtu {
                 "Existed ticket"
             ) {}
         };
+        
         class no_such_ticket : public exception {
         public:
             no_such_ticket() : exception(
@@ -28,7 +31,6 @@ namespace sjtu {
             ) {}
         };
         
-    private:
         std::string userId;
         std::string userName;
         std::string password;
@@ -36,9 +38,10 @@ namespace sjtu {
         sjtu::list <sjtu::ticket> ticketList;
         
     public:
+        
         user(){};
         
-        user(const std::string _id, const std::string &_name, const std::string &_password = "000000"): userId(_id), userName(_name), password(_password)){};
+        user(const std::string _id, const std::string &_name, const std::string &_password = "000000"): userId(_id), userName(_name), password(_password){};
         
         user(const user &other) {
             userId = other.userId;
@@ -50,6 +53,7 @@ namespace sjtu {
             userId = other.userId;
             userName = other.userName;
             password = other.password;
+            return *this;
         }
         
         const std::string & getId()const {
@@ -76,13 +80,12 @@ namespace sjtu {
         const ticket & getTicket(const std::string &ticketId)const {
             sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
             for(int i = 0; i < ticketList.size(); ++i) {
-                if(ticketId == (*iterator).getId) {
-                    return (*iterator);
+                if(ticketId == (*it).getId()) {
+                    return (*it);
                 }
                 ++it;
             }
             throw no_such_ticket();
-            return NULL;
         }
         
         void modifyName(const std::string &newName) {
@@ -98,7 +101,7 @@ namespace sjtu {
         void orderTicket(const ticket &tk) {
             sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
             for(int i = 0; i < ticketList.size(); ++i) {
-                if(tk.getId() == (*it).getId) {
+                if(tk.getId() == (*it).getId()) {
                     throw existed_ticket();
                     return;
                 }
@@ -125,8 +128,8 @@ namespace sjtu {
             os << "userName: " << obj.userName << std::endl;
             os << "password: " << obj.password << std::endl;
             os << "ticketList: ";
-            sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
-            for(int i = 0; i < obj.bookedTicket.size(); ++i) {
+            sjtu::list<ticket>::const_iterator it = obj.ticketList.cbegin();
+            for(int i = 0; i < obj.ticketList.size(); ++i) {
                 os << (*it) << std::endl;
                 ++it;
             }
@@ -134,11 +137,17 @@ namespace sjtu {
         }
         
         void readIn(std::ifstream &file) {
-            
+            readString(file, userId);
+            readString(file, userName);
+            readString(file, password);
+            ticketList.readIn(file);
         }
         
         void writeOut(std::ofstream &file) {
-            
+            writeString(file, userId);
+            writeString(file, userName);
+            writeString(file, password);
+            ticketList.writeOut(file);
         }
     };
 }
