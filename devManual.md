@@ -104,7 +104,7 @@ class myClass {
 | const std::string & | getId() const | 返回用户id |
 | const std::string & | getName() const | 返回用户名 |
 | const std::string & | getPassword() const | 返回用户密码 |
-| void | getTicketList(std::ostream &os) | 输出车票列表 只需输出车票id即可 |
+| void | getTicketList(std::ostream &os) const | 输出车票列表 只需输出车票id即可 |
 | const ticket & | getTicket(const std::string &ticketId) const | 返回用户所订的某张车票 若该用户未订此车票 |
 | void | modifyName(const std::string &newName) | 修改用户名 |
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
@@ -115,7 +115,7 @@ class myClass {
 | void | writeOut(std::ofstream &file) | 向file写入数据 |
 
 注意:
-1. 已订车票清单要求用map存储, <string ticketId, ticket tk>
+1. 已订车票清单用list存储
 
 #### system
 
