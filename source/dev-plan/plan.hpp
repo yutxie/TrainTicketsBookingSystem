@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <fstream>
 
 namespace sjtu {
 	class plan {
@@ -105,7 +106,7 @@ namespace sjtu {
 			for (int i = 0; i < len; ++i)
 				file.read(reinterpret_cast<char *> (&trainName[i]), sizeof(char));
 			train = trainName;
-			file.read(reinterpret_cast<char *> (&startTime), sizeof(time));
+			file.read(reinterpret_cast<char *> (&startTime), sizeof(timer));
 			file.read(reinterpret_cast<char *> (&status), sizeof(bool));
 		}
 		void writeOut(std::ofstream &file) {
@@ -113,10 +114,11 @@ namespace sjtu {
 			for (int i = 1; i <= 3; ++i)
 				for (int j = 0; j <= stationNumber; ++j)
 					file.write(reinterpret_cast<char *> (&ticketNumber[i][j]), sizeof(int));
-			file.write(reinterpret_cast<char *> (&(std::train.length())), sizeof(int));
+			int len = train.length();
+			file.write(reinterpret_cast<char *> (&len), sizeof(int));
 			for (int i = 0; i < len; ++i)
 				file.write(reinterpret_cast<char *> (&train[i]), sizeof(char));
-			file.write(reinterpret_cast<char *> (&startTime), sizeof(time));
+			file.write(reinterpret_cast<char *> (&startTime), sizeof(timer));
 			file.write(reinterpret_cast<char *> (&status), sizeof(bool));
 		}
 	};

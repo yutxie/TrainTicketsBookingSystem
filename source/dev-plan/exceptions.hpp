@@ -26,6 +26,7 @@ public:
  * Please complete them.
  */
 class index_out_of_bound : public exception {
+public:
 	index_out_of_bound() : exception(
 		"index_out_of_bound",
 		"Index out of bound!"
@@ -33,6 +34,7 @@ class index_out_of_bound : public exception {
 };
 
 class runtime_error : public exception {
+public:
 	runtime_error() : exception(
 		"runtime_error",
 		"Runtime error!"
@@ -40,6 +42,7 @@ class runtime_error : public exception {
 };
 
 class invalid_iterator : public exception {
+public:
 	invalid_iterator() : exception(
 		"invalid_iterator",
 		"Invalid iterator!"
@@ -47,6 +50,7 @@ class invalid_iterator : public exception {
 };
 
 class container_is_empty : public exception {
+public:
 	container_is_empty() : exception(
 		"container_is_empty",
 		"Container is empty!"
@@ -54,6 +58,7 @@ class container_is_empty : public exception {
 };
 
 class container_is_not_empty : public exception {
+public:
 	container_is_not_empty() : exception(
 		"container_is_not_empty",
 		"Container is not empty!"
