@@ -110,8 +110,6 @@ class myClass {
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
 | void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
-| friend std::ifstream & | operator>>(std::ifstream &file, user &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const user &obj) | 向file写入数据 |
 
 注意:
 1. 已订车票清单用list存储
@@ -162,16 +160,16 @@ class myClass {
 | / | train(const std::string &_id) | 构造函数 |
 | / | train(const train &other) | 拷贝构造 |
 | train & | operator=(const train &other) | 赋值函数 |
+| const std::string & | getId() | 返回车次编号 |
 | vector< station> & | getStationList() | 返回车站列表 |
 | station & | getStation(int index) | 返回运行线路上的第index个车站 |
+| int | getStationId(const std::string &stationName) | 返回站名为stationName的车站在该车次中的的序号 |
 | map< std::string, plan> & | getPlanList() | 返回运行计划列表 |
 | plan & | getPlan(const std::string &startDate) | 返回始发日期为startDate的运行计划 |
 | void | pushStation(const station &st) | 添加站点到运行线路末尾 若该站点信息不合法 throw invalid_station(); |
 | void | popStation() | 删除运行线路末尾的站点 |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
 | void | deletePlan(const timer &startTime) | 删除运行计划 |
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 运行线路上的车站从0开始编号, 即起点站对于当前车次来说是第0个车站
