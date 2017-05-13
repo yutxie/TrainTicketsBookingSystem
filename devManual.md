@@ -76,7 +76,7 @@ class myClass {
 | vector.hpp | vector容器 |
 | map.hpp | map容器 |
 | list.hpp | list容器 |
-| timer.hpp | 时间 |
+| string.hpp | 时间 |
 | log.hpp | 系统日志 |
 | getPath.hpp | 提取路径 |
 
