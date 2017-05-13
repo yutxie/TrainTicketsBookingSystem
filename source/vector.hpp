@@ -320,7 +320,6 @@ namespace sjtu {
 			if(!obj.empty()) throw container_is_not_empty();
 			obj.clear();
 			int n = 0;
-			//file.read(reinterpret_cast<char *> (&n), sizeof(int));
 			file >> n;
 			std::cout << n << std::endl;
 			for(int i = 0; i < n; ++i) {
@@ -332,7 +331,6 @@ namespace sjtu {
 			return file;
 		}
 		friend std::ofstream &operator<<(std::ofstream &file, const vector &obj) {
-			//file.write(reinterpret_cast<const char *> (&obj.length), sizeof(int));
 			file << obj.length;
 			for (int i = 0; i < obj.length; ++i) {
 				file << obj.data[i];

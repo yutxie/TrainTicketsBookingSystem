@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace sjtu {
+namespace std {
 	
 	std::ifstream &operator>>(std::ifstream &file, int &x) {
 		file.read(reinterpret_cast<char *> (&x), sizeof(int));
