@@ -110,9 +110,8 @@ class myClass {
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
 | void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
-| friend std::ostream & | operator<<(std::ostream &os, user &obj) | 输出用户id, 用户名, 密码, 已订票清单 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 已订车票清单用list存储
@@ -144,8 +143,8 @@ class myClass {
 | user & | signUpUser(const std::string &userId, const std::string &userPassword, const std::string &userName) | 注册用户 |
 | void | work(const std::string &str) | 解析str内容并执行相应命令 同时将操作写入日志 |
 | void | writeOutLog(std::ostream &os) | 向os写出系统日志 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 函数尚不完全, 还需更新!
@@ -171,9 +170,8 @@ class myClass {
 | void | popStation() | 删除运行线路末尾的站点 |
 | void | insertPlan(const plan &pl) | 添加运行计划 |
 | void | deletePlan(const timer &startTime) | 删除运行计划 |
-| friend std::ostream & | operator<<(std::ostream &os, train &obj) | 输出车次编号, 车站列表及车站信息, 运行计划列表及运行计划信息 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) const | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 运行线路上的车站从0开始编号, 即起点站对于当前车次来说是第0个车站
@@ -200,9 +198,8 @@ class myClass {
 | int | getLength() const | 返回该车次从出发到停靠在该站的行驶里程数 |
 | int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
-| friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出站名, 编号, 所属车次, 到达/出发时间, 里程数, 各类型票价 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 #### plan
 
@@ -224,9 +221,8 @@ class myClass {
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartDate(const std::string &newStartDate) | 修改始发日期 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
-| friend std::ostream & | operator<<(std::ostream &os, const station &obj) | 输出所属车次, 始发时间, 表格形式的余票信息, 发售状态 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 所有修改均需要检查发售状态为 false
@@ -255,9 +251,8 @@ class myClass {
 | const std::string & | getStopTime() const | 返回到达时间 |
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
-| friend std::ostream & | operator<<(std::ostream &os, const ticket &obj) | 输出所属车次, 始发时间, 用户信息, 座位类型, 票价, 起点站与终点站 |
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 ### 第7周
 
@@ -270,8 +265,8 @@ list容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 相关代码参考:
 ```cpp
@@ -305,8 +300,8 @@ map容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 
 #### log
@@ -329,20 +324,20 @@ vector容器, 基本同STLite标准要求, 文件操作相关接口如下
 
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
-| void | readIn(std::ifstream &file) | 从file读入数据 |
-| void | writeOut(std::ofstream &file) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
+
+#### string
+
+功能同std::string类似, 文件操作相关接口如下
+
+| return type | method | description |
+|:----------:|:---------------:|:----------:|
+| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 
 ## 模版函数
-
-#### rwString
-
-从或向文件流读入或写出string类变量
-
-| return type | method |
-|:----------:|:---------------:|
-| void | readString(std::ifstream &file, std::string &str) |
-| void | writeString(std::ofstream &file, const std::string &str) |
 
 #### getPath
 
