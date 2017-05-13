@@ -6,8 +6,8 @@
 //  Copyright © 2017年 李江贝. All rights reserved.
 //
 
-#ifndef _SJTU_LIST_HPP
-#define _SJTU_LIST_HPP
+#ifndef SJTU_LIST_HPP
+#define SJTU_LIST_HPP
 /**
  * similar to vector.hpp in STLite
  */
@@ -418,7 +418,7 @@ public:
 		obj.clear();
 		T x;
 		for(int i = 0; i < _currentlength; ++i) {
-			file.read(reinterpret_cast<char *> (&x), sizeof(T));
+			file >> x;
 			obj.push_back(x);
 		}
 		return file;
@@ -427,7 +427,7 @@ public:
 		file.write(reinterpret_cast<const char *> (&obj.currentlength), sizeof(int));
 		node *ptr = obj.head->next;
 		while(ptr != obj.tail) {
-			file.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
+			file << ptr->value;
 			ptr = ptr -> next;
 		}
 		return file;
