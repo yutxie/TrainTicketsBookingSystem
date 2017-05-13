@@ -28,6 +28,7 @@ public:
 	size_t length() const {return str.length();}
 	char operator[](size_t index) const {return str[index];}
 	bool operator==(const string &other) const {return str == other.str;}
+	bool operator<(const string &other) const {return str < other.str;}
 	friend std::ifstream &operator>>(std::ifstream &file, string &str) {
 		str = "";
 		int length;
