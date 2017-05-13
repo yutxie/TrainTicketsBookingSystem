@@ -1,16 +1,15 @@
 #ifndef SJTU_TRAIN_HPP
 #define SJTU_TRAIN_HPP
 
-#include <string>
 #include <iostream>
 #include <cstdio>
-#include <vector>
-#include <map>
+#include "vector.hpp"
+#include "map.hpp"
 #include <fstream>
 #include "station.hpp"
 #include "exceptions.hpp"
 #include "plan.hpp"
-#include "rwString.hpp"
+#include "string.hpp"
 
 namespace sjtu {
 
@@ -49,47 +48,41 @@ class train {
 	};
 	
 private:
-	std::string id;
-	std::vector<station> stationList;
-	std::map<timer, plan> planList;
+	string id;
+	string seat[4];
+	vector<station> stationList;
+	map<string, plan> planList;
+	map<string,int> num;
 public:
 	train() {}
-	train(const std::string &_id) : id(_id) {}
-	train(const train &other) {
-		id = other.id;
-		stationList = other.stationList;
-		planList = other.planList;
+	train(const string &_id) : id(_id) {}
+	train(const train &other) :id(other.id),stationList(other.stationList),planList(other.planList),num(other.num) {
+		for (int i = 1; i <= 3; ++i)
+			seat[i] = other.seat[i];
 	}
 	train & operator=(const train &other) {
 		id = other.id;
 		stationList = other.stationList;
 		planList = other.planList;
+		for (int i = 1; i <= 3; ++i)
+			seat[i] = other.seat[i];
+		num = other.num;
 		return *this;
 	}
-	void getStationList(std::ostream &os) const {
-		int sz = stationList.size();
-		if(sz < 2) os << "There is " << sz << "station\n";
-		else os << "There are " << sz << "stations\n";
-		for(int i = 0; i < sz; ++i) {
-			os << "Station No." << i << "\n";
-			os << stationList[i];
-		}
+	string getId() const {return id;}
+	string getSeat(int type) const {return seat[type];}
+	vector<station> &getStationList() {return stationList;}
+	station & getStation(const string &stationName) {
+		if (num.find(stationName) == num.end()) throw index_out_of_bound();
+		return station(num[stationName]);
 	}
-	station & getStation(int index) {
+	station & getStation(const int &index) {
 		if(index >= stationList.size()) throw index_out_of_bound();
 		return stationList[index];
 	}
-	void getPlanList(std::ostream &os) {
-		int sz = planList.size();
-		if(sz < 2) os << "There is " << sz << "plan\n";
-		else os << "There are " << sz << "plans\n";
-		int cnt = 1;
-		for(std::map<timer, plan>::iterator it = planList.begin(); it != planList.end(); ++it, ++cnt) {
-			os << "Plan No." << cnt << "\n";
-			os << it -> second;
-		}
-	}
-	plan & getPlan(const timer &startTime) {
+	int getStationId(const string &stationName) {return num[stationName];}
+	map<string, plan> &getPlanList() {return planList;}
+	plan & getPlan(const string &startTime) {
 		if(planList.find(startTime) == planList.end()) throw no_such_plan();
 		return planList[startTime];
 	}
@@ -104,36 +97,40 @@ public:
 			for(int type = 1; type <= 3; ++type)
 				if(tmp.getPrice(type) > st.getPrice(type)) throw invalid_station();
 		}
+		num[st.getName()] = stationList.size()
 		stationList.push_back(st);
 	}
 	void popStation() {
 		if(stationList.empty()) throw no_such_station();
+		map<string,int> ::itearator it;
+		it = num.find(stationList.back());num.erase(it);
 		stationList.pop_back();
 	}
 	void insertPlan(const plan &pl) {
-		const timer &startTime = pl.getStartTime();
+		const string &startTime = pl.getStartTime();
 		if(planList.find(startTime) != planList.end()) throw existed_plan();
 		planList.insert(std::make_pair(startTime, pl));
 	}
-	void deletePlan(const timer &startTime) {
+	void deletePlan(const string &startTime) {
 		if(planList.find(startTime) == planList.end()) throw no_such_plan();
 		planList.erase(startTime);
 	}
-	friend std::ostream & operator<<(std::ostream &os, train &obj) {
-		os << "Train id: " << obj.id << "\n";
-		obj.getStationList(os);
-		obj.getPlanList(os);
-		return os;
+	
+	friend std::ifstream operator>>(std::ifstream &file, train &tr) {
+		file >> tr.id;
+		for(int i = 1; i <= 3; ++i) file >> tr.seat[i];
+		file >> stationList;
+		file >> planList;
+		file >> num;
+		return file;
 	}
-	void readIn(std::ifstream &file) {
-		readString(file, id);
-		stationList.readIn(file);
-		planList.readIn(file);
-	}
-	void writeOut(std::ofstream &file) const {
-		writeString(file, id);
-		stationList.writeOut(file);
-		planList.writeOut(file);
+	friend std::ofstream operator<<(std::ofstream &file, train &tr) {
+		file << tr.id;
+		for(int i = 1; i <= 3; ++i) file << tr.seat[i];
+		file << stationList;
+		file << planList;
+		file << num;
+		return file;
 	}
 };
 

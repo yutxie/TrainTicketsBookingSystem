@@ -411,23 +411,26 @@ public:
      * !!! Pay attentions
      *   In STL this operator does not check the boundary but I want you to do.
      */
-	void readIn(std::ifstream &file) {
+	friend std::ifstream &operator>>(std::ifstream &file, list &obj) {
 		if(!empty()) throw container_is_not_empty();
 		int _currentlength;
 		file.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
+		obj.clear();
 		T x;
 		for(int i = 0; i < _currentlength; ++i) {
 			file.read(reinterpret_cast<char *> (&x), sizeof(T));
-			push_back(x);
+			obj.push_back(x);
 		}
+		return file;
 	}
-	void writeOut(std::ofstream &file) {
-		file.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
-		node *ptr = head -> next;
-		while(ptr != tail) {
+	friend std::ofstream &operator<<(std::ofstream &file, const list &obj) {
+		file.write(reinterpret_cast<const char *> (&obj.currentlength), sizeof(int));
+		node *ptr = obj.head->next;
+		while(ptr != obj.tail) {
 			file.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
 			ptr = ptr -> next;
 		}
+		return file;
 	}
     list & operator = (const list & other){
         clear();

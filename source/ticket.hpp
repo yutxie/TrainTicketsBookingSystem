@@ -5,33 +5,34 @@
 #include <string>
 #include <fstream>
 #include "exceptions.hpp"
-#include "timer.hpp"
-#include "rwString.hpp"
+#include "string.hpp"
 
 namespace sjtu{
 	class ticket{
 	private:
-		std::string id;
-		std::string trainId;//所属车次
-		std::string userId;//用户ID
-		std::string userName;//用户名 
-		std::string departStation;//起点站 
-		std::string stopStation;//终点站 
-		timer departTime;//出发时间 
-		timer stopTime;//到达时间 
+		string id;
+		string trainId;//所属车次
+		string userId;//用户ID
+		string userName;//用户名 
+		string departStation;//起点站 
+		string stopStation;//终点站 
+		string startDate;
+		string departTime;//出发时间 
+		string stopTime;//到达时间 
 		int seatType;//座位类型 
 		int price;//票价 
+		int number;
 		
 	public:
 		ticket() {}
-		ticket(const std::string &_id, const std::string &_train, const std::string &_userId, 
-			const std::string &_userName, const std::string &_departStation,
-			const std::string &_stopStation, const timer &_departTime, 
-			const timer &_stopTime, int _seatType, int _price): id(_id), 
+		ticket(const string &_id, const string &_train, const string &_userId, 
+			const string &_userName, const string &_departStation,
+			const string &_stopStation, const string &_startDate, const string &_departTime, 
+			const string &_stopTime, int _seatType, int _price, int _number): id(_id), 
 			trainId(_train), userId(_userId), userName(_userName), 
 			departStation(_departStation), stopStation(_stopStation), 
-			departTime(_departTime), stopTime(_stopTime), 
-			seatType(_seatType),price(_price) {}
+			startDate(_startDate), departTime(_departTime), stopTime(_stopTime), 
+			seatType(_seatType),price(_price), number(_number) {}
 		
 		ticket(const ticket &other){
 			id = other.id;
@@ -40,10 +41,12 @@ namespace sjtu{
 			userName=other.userName;
 			departStation=other.departStation;
 			stopStation=other.stopStation;
+			startDate = other.startDate;
 			departTime=other.departTime;
 			stopTime=other.stopTime;
 			seatType=other.seatType;
 			price=other.price;
+			number = other.number;
 		}
 		
 		ticket &operator=(const ticket &other){
@@ -53,42 +56,48 @@ namespace sjtu{
 			userName=other.userName;
 			departStation=other.departStation;
 			stopStation=other.stopStation;
+			startDate = other.startDate;
 			departTime=other.departTime;
 			stopTime=other.stopTime;
 			seatType=other.seatType;
 			price=other.price;
+			number = other.number;
 			return *this;
 		}
 		
-		const std::string & getId() const {
+		const string & getId() const {
 			return id;
 		}
 		
-		const std::string & getTrain() const {
+		const string & getTrain() const {
 			return trainId;
 		}
 		
-		const std::string & getUserId() const{
+		const string & getUserId() const{
 			return userId; 
 		}
 		
-		const std::string & getUserName() const{
+		const string & getUserName() const{
 			return userName;
 		}
 		
-		const std::string & getDepartStation() const{
+		const string & getDepartStation() const{
 			return departStation;
 		}
 		
-		const std::string & getStopStation() const{
+		const string & getStopStation() const{
 			return stopStation;
 		}
 		
-		const timer & getDepartTime() const{
+		const string & getStartDate() const {
+			return startDate;
+		}
+		
+		const string & getDepartTime() const {
 			return departTime;
 		}
 		
-		const timer & getStopTime()	const{
+		const string & getStopTime() const {
 			return stopTime;
 		}
 		
@@ -96,51 +105,43 @@ namespace sjtu{
 			return seatType;
 		}
 		
-		int getPrice()	const{
+		int getPrice() const {
 			return price;
 		}
 		
-		friend std::ostream& operator<<(std::ostream &os,const ticket& obj) {
-			os << "id: " << obj.id << '\n';
-			os<<"trainId:\t"<<obj.trainId<<'\n';
-			os<<"userId:\t"<<obj.userId<<'\n';
-			os<<"userName:\t"<<obj.userName<<'\n';
-			os<<"departStation:\t"<<obj.departStation<<'\n';
-			os<<"stopStation:\t"<<obj.stopStation<<'\n';
-			os<<"departTime:\t"<<obj.departTime<<'\n';
-			os<<"stopTime:\t"<<obj.stopTime<<'\n';
-			os<<"seatType:\t"<<obj.seatType<<'\n';
-			os<<"price:\t"<<obj.price<<'\n';
-			return os;
+		int getNumber() const {
+			return number;
 		}
 		
-		void readIn(std::ifstream &file) {
-			ticket &now = *this;
-			file.read(reinterpret_cast<char *> (&now), sizeof(ticket));
-			std::string str;
-			file.read(reinterpret_cast<char *> (&str), sizeof(std::string));
-			readString(file, id);
-			readString(file, trainId);
-			readString(file, userId);
-			readString(file, userName);
-			readString(file, departStation);
-			readString(file, stopStation);
-			file.read(reinterpret_cast<char *> (&departTime), sizeof(timer));
-			file.read(reinterpret_cast<char *> (&stopTime), sizeof(timer));
-			file.read(reinterpret_cast<char *> (&seatType), sizeof(int));
-			file.read(reinterpret_cast<char *> (&price), sizeof(int));
+		friend std::ifstream &operator>>(std::ifstream &file, ticket &tk) {
+			file >> tk.id;
+			file >> tk.trainId;
+			file >> tk.userId;
+			file >> tk.userName;
+			file >> tk.departStation;
+			file >> tk.stopStation;
+			file >> tk.startDate;
+			file >> tk.departTime;
+			file >> tk.stopTime;
+			file.read(reinterpret_cast<char *> (&tk.seatType), sizeof(int));
+			file.read(reinterpret_cast<char *> (&tk.price), sizeof(int));
+			file.read(reinterpret_cast<char *> (&tk.number), sizeof(int));
+			return file;
 		}
-		void writeOut(std::ofstream &file) {
-			writeString(file, id);
-			writeString(file, trainId);
-			writeString(file, userId);
-			writeString(file, userName);
-			writeString(file, departStation);
-			writeString(file, stopStation);
-			file.write(reinterpret_cast<const char *> (&departTime), sizeof(timer));
-			file.write(reinterpret_cast<const char *> (&stopTime), sizeof(timer));
-			file.write(reinterpret_cast<const char *> (&seatType), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&price), sizeof(int));
+		friend std::ofstream &operator<<(std::ofstream &file, const ticket &tk) {
+			file << tk.id;
+			file << tk.trainId;
+			file << tk.userId;
+			file << tk.userName;
+			file << tk.departStation;
+			file << tk.stopStation;
+			file << tk.startDate;
+			file << tk.departTime;
+			file << tk.stopTime;
+			file.write(reinterpret_cast<const char *> (&tk.seatType), sizeof(int));
+			file.write(reinterpret_cast<const char *> (&tk.price), sizeof(int));
+			file.write(reinterpret_cast<const char *> (&tk.number), sizeof(int));
+			return file;
 		}
 	};
 
