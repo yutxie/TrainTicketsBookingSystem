@@ -76,9 +76,9 @@ class myClass {
 | vector.hpp | vector容器 |
 | map.hpp | map容器 |
 | list.hpp | list容器 |
-| string.hpp | 时间 |
 | log.hpp | 系统日志 |
 | getPath.hpp | 提取路径 |
+| rwFile.hpp | 读写文件 |
 
 ## 类接口
 
@@ -110,8 +110,8 @@ class myClass {
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
 | void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
+| friend std::ifstream & | operator>>(std::ifstream &file, user &obj) | 从file读入数据 |
+| friend std::ofstream & | operator<<(std::ofstream &file, const user &obj) | 向file写入数据 |
 
 注意:
 1. 已订车票清单用list存储
@@ -187,7 +187,7 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | station() | 默认构造 |
-| / | station(const std::string &_name, int _id, const std::string &_train, const std::string &_stopTime, const std::string &_departTime, int _length, int _price[]) |  构造函数 |
+| / | station(const std::string &_name, const std::string &_train, const std::string &_stopTime, const std::string &_departTime, int _length, int _price[]) |  构造函数 |
 | / | station(const station &other) | 拷贝构造 |
 | station & | operator=(const station &other) | 赋值 |
 | const std::string & | getName() const | 返回该车站的名字 |
@@ -198,8 +198,6 @@ class myClass {
 | int | getLength() const | 返回该车次从出发到停靠在该站的行驶里程数 |
 | int | getPrice(int type) const | 返回该车次的type类型座位从出发到该站的票价 其中type=1,2,3分别表示一等座,二等座,三等座 |
 | void | modifyPrice(int type, int newPrice) | 修改票价 |
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 #### plan
 
@@ -221,8 +219,6 @@ class myClass {
 | void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
 | void | modifyStartDate(const std::string &newStartDate) | 修改始发日期 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
 
 注意:
 1. 所有修改均需要检查发售状态为 false
@@ -237,7 +233,7 @@ class myClass {
 | return type | method | description |
 |:----------:|:---------------:|:----------:|
 | / | ticket() | 默认构造 |
-| / | ticket(const std::string &_id, const std::string &_train, const std::string &_startDate, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const std::string &_departTime, const std::string &_stopTime, int _type, int _price) | 构造函数 |
+| / | ticket(const std::string &_id, const std::string &_train, const std::string &_startDate, const std::string &_userId, const std::string &_userName, const std::string &_departStation, const std::string &_stopStation, const std::string &_departTime, const std::string &_stopTime, int _type, int _price, int _number) | 构造函数 |
 | / | ticket(const ticket &other) | 拷贝构造 |
 | ticket & | operator=(const ticket &other) | 赋值 |
 | const std::string & | getId() | 返回车票id |
@@ -247,62 +243,22 @@ class myClass {
 | const std::string & | getUserName() const | 返回用户名 |
 | const std::string & | getDepartStation() const | 返回起点站 |
 | const std::string & | getStopStation() const | 返回终点站 |
+| const std::string & | getStartTime() const | 返回始发日期 |
 | const std::string & | getDepartTime() const | 返回出发时间 |
 | const std::string & | getStopTime() const | 返回到达时间 |
 | int | getType() const | 返回座位类型 |
 | int | getPrice() const | 返回票价 |
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
+| int | getNumber() const | 返回车票数 |
 
 ### 第7周
 
-注意:
-1. 文件打开失败时均会 throw no_such_file();
-
 #### list
 
-list容器, 基本同STLite标准要求, 文件操作相关接口如下
-
-| return type | method | description |
-|:----------:|:---------------:|:----------:|
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
-
-相关代码参考:
-```cpp
-#include <fstream>
-
-void readIn(std::ifstream &file) {
-	if(!empty()) throw container_is_not_empty();
-	int _currentlength;
-	file.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
-	T x;
-	for(int i = 0; i < _currentlength; ++i) {
-		file.read(reinterpret_cast<char *> (&x), sizeof(T));
-		push_back(x);
-	}
-}
-void writeOut(std::ofstream &file) {
-	file.write(reinterpret_cast<const char *> (&currentlength), sizeof(int));
-	node *ptr = head -> next;
-	while(ptr != tail) {
-		file.write(reinterpret_cast<const char*> (&(ptr -> value)), sizeof(T));
-		ptr = ptr -> next;
-	}
-}
-
-```
+list容器, 基本同STLite标准要求
 
 #### map
 
-目前尚未完成, 请暂缓调用!
-map容器, 基本同STLite标准要求, 文件操作相关接口如下
-
-| return type | method | description |
-|:----------:|:---------------:|:----------:|
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
-
+map容器, 基本同STLite标准要求
 
 #### log
 
@@ -317,27 +273,28 @@ map容器, 基本同STLite标准要求, 文件操作相关接口如下
 | friend std::ostream & | operator<<(std::ostream &os, log &lg) | 输出日志内容 |
 | void | add(const std::string &str) | 向日志末尾新行添加语句str |
 
+注意:
+1. 文件打开失败时会 throw no_such_file();
+
 #### vector
 
-目前尚未完成, 请暂缓调用!
-vector容器, 基本同STLite标准要求, 文件操作相关接口如下
-
-| return type | method | description |
-|:----------:|:---------------:|:----------:|
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
-
-#### string
-
-功能同std::string类似, 文件操作相关接口如下
-
-| return type | method | description |
-|:----------:|:---------------:|:----------:|
-| friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
-| friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
-
+vector容器, 基本同STLite标准要求
 
 ## 模版函数
+
+#### rwFile
+
+二进制下从/向文件读/写变量
+
+| return type | method |
+|:----------:|:---------------:|
+| void | readIn(std::ifstream &file, T &x) |
+| void | writeOut(std::ofstream &file, const T &x) |
+
+注意:
+1. 已经对std::string做出了重载; 基本类型(如 int)并未做出过重载
+2. 以上所有类型都需要对其进行重载
+3. 在从文件读入数据到某容器的实例时, 若其非空 throw container_is_not_empty();
 
 #### getPath
 
