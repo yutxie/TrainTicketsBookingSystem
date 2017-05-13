@@ -13,8 +13,8 @@
 #include <climits>
 #include <cstddef>
 #include <fstream>
+#include "rwFile.hpp"
 #include "exceptions.hpp"
-#include "rwInt.hpp"
 
 namespace sjtu {
 	
@@ -228,6 +228,14 @@ namespace sjtu {
             if(size() == 0) throw container_is_empty();
             return data[length - 1];
         }
+		T & front() {
+            if(size() == 0) throw container_is_empty();
+            return data[0];
+        }
+        T & back() {
+            if(size() == 0) throw container_is_empty();
+            return data[length - 1];
+        }
         iterator begin() {
             iterator tmp(&data, 0);
             return tmp;
@@ -316,26 +324,23 @@ namespace sjtu {
             if(length == 0) throw container_is_empty();
             --length;
         }
-		friend std::ifstream &operator>>(std::ifstream &file, vector &obj) {
+		friend void readIn(std::ifstream &file, vector &obj) {
 			if(!obj.empty()) throw container_is_not_empty();
 			obj.clear();
 			int n = 0;
-			file >> n;
-			std::cout << n << std::endl;
+			readIn(file, n);
 			for(int i = 0; i < n; ++i) {
 				T x;
-				file >> x;
-				std::cout << x << std::endl;
+				readIn(file, x);
 				obj.push_back(x);
 			}
-			return file;
 		}
-		friend std::ofstream &operator<<(std::ofstream &file, const vector &obj) {
-			file << obj.length;
-			for (int i = 0; i < obj.length; ++i) {
-				file << obj.data[i];
+		friend void writeOut(std::ofstream &file, const vector &obj) {
+			int n = obj.length;
+			writeOut(file, n);
+			for (int i = 0; i < n; ++i) {
+				writeOut(file, obj.data[i]);
 			}
-			return file;
 		}
     };
 }

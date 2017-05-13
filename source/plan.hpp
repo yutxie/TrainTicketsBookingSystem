@@ -6,23 +6,23 @@
 #include <cstdlib>
 #include <fstream>
 #include "exceptions.hpp"
-#include "rwInt.hpp"
+#include "rwFile.hpp"
 
 namespace sjtu {
 	class plan {
 	private:
-		string train;
+		std::string train;
+		std::string startDate;
 		int stationNumber,*ticketNumber[4];
-		string startTime;
 		int status;
 		static const int TOTAL = 2000;
 	public:
-		plan() :train(""),startTime(),stationNumber(0),status(0) {
+		plan() :train(""),startDate(),stationNumber(0),status(0) {
 			for (int i = 0; i < 3; ++i)
 				ticketNumber[i] = NULL;
 		}
-		plan(const string &_train,const string &_startTime,const int _stationNumber,const int &_status = 0)
-			:train(_train),startTime(_startTime),stationNumber(_stationNumber),status(_status) {
+		plan(const std::string &_train,const std::string &_startDate,const int _stationNumber,const int &_status = 0)
+			:train(_train),startDate(_startDate),stationNumber(_stationNumber),status(_status) {
 			for (int i = 1; i <= 3; ++i) {
 				ticketNumber[i] = new int[stationNumber + 1];
 				for (int j = 0; j <= stationNumber; ++j)
@@ -30,7 +30,7 @@ namespace sjtu {
 			}
 		}
 		plan(const plan &other)
-			:train(other.train),startTime(other.startTime),stationNumber(other.stationNumber),status(other.status) {
+			:train(other.train),startDate(other.startDate),stationNumber(other.stationNumber),status(other.status) {
 			for (int i = 1; i <= 3; ++i) {
 				ticketNumber[i] = new int[stationNumber + 1];
 				for (int j = 0; j <= stationNumber; ++j)
@@ -45,11 +45,11 @@ namespace sjtu {
 				for (int j = 0; j <= stationNumber; ++j)
 					ticketNumber[i][j] = other.ticketNumber[i][j];
 			}
-			train = other.train,startTime = other.startTime,status = other.status;
+			train = other.train,startDate = other.startDate,status = other.status;
 			return *this;
 		}
-		const string & getTrain() const{return train;}
-		const string & getStartTime() const{return startTime;}
+		const std::string & getTrain() const{return train;}
+		const std::string & getStartDate() const{return startDate;}
 		int getStationNumber() const{return stationNumber;}
 		int getStatus() const{return status;}
 		int getLeftTickets(int type,int u,int v) const{
@@ -58,10 +58,10 @@ namespace sjtu {
 			for (int i = v - 1; i >= u; --i) number = std::max(number,ticketNumber[type][i]);
 			return TOTAL - number;
 		}
-		void modifyStartTime(const string &newStartTime) {startTime = newStartTime;}
+		void modifyStartDate(const std::string &newStartDate) {startDate = newStartDate;}
 		void modifyStatus(const int &newStatus) {status = newStatus;}
 		void query(int type,int u,int v) const{
-			std::cout << startTime << ' ' << status << ' ' << getLeftTickets(type,u,v) << std::endl;
+			std::cout << startDate << ' ' << status << ' ' << getLeftTickets(type,u,v) << std::endl;
 		}
 		void orderTicket(int type,int u,int v,int number) {
 			if (status == 0 || u >= v || type < 1 || type > 3 || getLeftTickets(type,u,v) == 0) throw invalid_input();
@@ -78,7 +78,7 @@ namespace sjtu {
 			const plan &obj) {
 			os << "train: " << obj.train << std::endl;
 			os << "stationNumber: " << obj.stationNumber << std::endl;
-			os << "startTime: " << obj.startTime << std::endl;
+			os << "startDate: " << obj.startDate << std::endl;
 			os << "status " << obj.status << std::endl;
 			os << "ticketNumber:" << std::endl;
 			for (int i = 1; i <= 3; ++i) {
@@ -95,38 +95,26 @@ namespace sjtu {
 					delete [] ticketNumber[i];
 			}
 		}
-		friend std::ifstream &operator<<(std::ifstream &file, plan &obj) {
+		friend void readIn(std::ifstream &file, plan &obj) {
 			if(obj.stationNumber) throw container_is_not_empty();
-			file << obj.stationNumber;
-//			file.read(reinterpret_cast<char *> (&stationNumber), sizeof(int));
+			readIn(file,obj.stationNumber);
 			for (int i = 1; i <= 3; ++i) {
 				obj.ticketNumber[i] = new int[obj.stationNumber + 1];
 				for (int j = 0; j <= obj.stationNumber; ++j)
-					file << obj.ticketNumber[i][j];
-//					file.read(reinterpret_cast<char *> (&ticketNumber[i][j]), sizeof(int));
+					readIn(file,obj.ticketNumber[i][j]);
 			}
-			file << obj.train;
-			file << obj.startTime;
-			file << obj.status;
-//			readString(file,train);
-//			readString(file,startTime);
-//			file.read(reinterpret_cast<char *> (&status), sizeof(int));
-			return file;
+			readIn(file,obj.train);
+			readIn(file,obj.startDate);
+			readIn(file,obj.status);
 		}
-		friend std::ofstream &operator>>(std::ofstream &file, plan &obj) {
-			file >> obj.stationNumber;
-//			file.write(reinterpret_cast<char *> (&stationNumber), sizeof(int));
+		friend void writeOut(std::ofstream &file, plan &obj) {
+			writeOut(file,obj.stationNumber);
 			for (int i = 1; i <= 3; ++i)
-				for (int j = 0; j <= stationNumber; ++j)
-					file >> obj.ticketNumber[i][j];
-//					file.write(reinterpret_cast<char *> (&ticketNumber[i][j]), sizeof(int));
-			file >> obj.train;
-			file >> obj.startTime;
-			file >> obj.status; 
-//			writeString(file,train);
-//			writeString(file,startTime);
-//			file.write(reinterpret_cast<char *> (&status), sizeof(int));
-			return file;
+				for (int j = 0; j <= obj.stationNumber; ++j)
+					writeOut(file,obj.ticketNumber[i][j]);
+			writeOut(file,obj.train);
+			writeOut(file,obj.startDate);
+			writeOut(file,obj.status);
 		}
 	};
 }

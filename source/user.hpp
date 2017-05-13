@@ -8,10 +8,12 @@
 
 #ifndef SJTU_USER_HPP
 #define SJTU_USER_HPP
+
+#include "rwFile.hpp"
 #include "list.hpp"
 #include "ticket.hpp"
-#include "string.hpp"
 #include "exceptions.hpp"
+
 namespace sjtu {
     class user {
     private:
@@ -30,17 +32,17 @@ namespace sjtu {
                 "No such ticket"
             ) {}
         };
-        
-        string userId;
-        string userName;
-        string password;
+    
+        std::string userId;
+        std::string userName;
+        std::string password;
         sjtu::list<sjtu::ticket> ticketList;
         
     public:
         
         user(){};
         
-        user(const string _id, const string &_name, const string &_password = "000000"): userId(_id), userName(_name), password(_password){};
+        user(const std::string _id, const std::string &_name, const std::string &_password = "000000"): userId(_id), userName(_name), password(_password){};
         
         user(const user &other) {
             userId = other.userId;
@@ -55,15 +57,15 @@ namespace sjtu {
             return *this;
         }
         
-        const string & getId()const {
+        const std::string & getId()const {
             return userId;
         }
         
-        const string & getName()const {
+        const std::string & getName()const {
             return userName;
         }
         
-        const string & getPassword()const {
+        const std::string & getPassword()const {
             return password;
         }
         
@@ -71,9 +73,9 @@ namespace sjtu {
             return ticketList;
         }
         
-        const ticket & getTicket(const string &ticketId)const {
+        const ticket & getTicket(const std::string &ticketId)const {
             sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
-            for(int i = 0; i < ticketList.size(); ++i) {
+            for(size_t i = 0; i < ticketList.size(); ++i) {
                 if(ticketId == (*it).getId()) {
                     return (*it);
                 }
@@ -82,19 +84,19 @@ namespace sjtu {
             throw no_such_ticket();
         }
         
-        void modifyName(const string &newName) {
+        void modifyName(const std::string &newName) {
             userName = newName;
             return;
         }
         
-        void modifyPassword(string _password) {
+        void modifyPassword(std::string _password) {
             password = _password;
             return;
         }
         
         void orderTicket(const ticket &tk) {
             sjtu::list<ticket>::const_iterator it = ticketList.cbegin();
-            for(int i = 0; i < ticketList.size(); ++i) {
+            for(size_t i = 0; i < ticketList.size(); ++i) {
                 if(tk.getId() == (*it).getId()) {
                     throw existed_ticket();
                     return;
@@ -104,11 +106,15 @@ namespace sjtu {
             ticketList.push_back(tk);
         }
         
-        void disorderTicket(const string &ticketId) {
+        void disorderTicket(const std::string &ticketId, int dlt) {
             sjtu::list<ticket>::iterator it = ticketList.begin();
-            for(int i = 0; i < ticketList.size(); ++i) {
+            for(size_t i = 0; i < ticketList.size(); ++i) {
                 if((*it).getId() == ticketId) {
-                    ticketList.erase(it);
+					int number = (*it).getNumber();
+					if(number < dlt) throw invalid_input();
+					number -= dlt;
+					(*it).modifyNumber(number);
+                    if(number == 0)ticketList.erase(it);
                     return;
                 }
                 ++it;
@@ -117,20 +123,18 @@ namespace sjtu {
             return;
         }
         
-        friend std::ifstream &operator>>(std::ifstream &file, user &obj) {
-			file >> obj.userId;
-			file >> obj.userName;
-			file >> obj.password;
-			file >> obj.ticketList;
-			return file;
+        friend void readIn(std::ifstream &file, user &obj) {
+			readIn(file, obj.userId);
+			readIn(file, obj.userName);
+			readIn(file, obj.password);
+			readIn(file, obj.ticketList);
         }
         
-        friend std::ofstream &operator<<(std::ofstream &file, const user &obj) {
-			file << obj.userId;
-			file << obj.userName;
-			file << obj.password;
-			file << obj.ticketList;
-			return file;
+        friend void writeOut(std::ofstream &file, const user &obj) {
+			writeOut(file, obj.userId);
+			writeOut(file, obj.userName);
+			writeOut(file, obj.password);
+			writeOut(file, obj.ticketList);
         }
     };
 }

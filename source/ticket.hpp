@@ -4,31 +4,31 @@
 
 #include <string>
 #include <fstream>
+#include "rwFile.hpp"
 #include "exceptions.hpp"
-#include "string.hpp"
 
 namespace sjtu{
 	class ticket{
 	private:
-		string id;
-		string trainId;//所属车次
-		string userId;//用户ID
-		string userName;//用户名 
-		string departStation;//起点站 
-		string stopStation;//终点站 
-		string startDate;
-		string departTime;//出发时间 
-		string stopTime;//到达时间 
+		std::string id;
+		std::string trainId;//所属车次
+		std::string userId;//用户ID
+		std::string userName;//用户名 
+		std::string departStation;//起点站 
+		std::string stopStation;//终点站 
+		std::string startDate;
+		std::string departTime;//出发时间 
+		std::string stopTime;//到达时间 
 		int seatType;//座位类型 
-		int price;//票价 
+		double price;//票价 
 		int number;
 		
 	public:
 		ticket() {}
-		ticket(const string &_id, const string &_train, const string &_userId, 
-			const string &_userName, const string &_departStation,
-			const string &_stopStation, const string &_startDate, const string &_departTime, 
-			const string &_stopTime, int _seatType, int _price, int _number): id(_id), 
+		ticket(const std::string &_id, const std::string &_train, const std::string &_userId, 
+			const std::string &_userName, const std::string &_departStation,
+			const std::string &_stopStation, const std::string &_startDate, const std::string &_departTime, 
+			const std::string &_stopTime, int _seatType, double _price, int _number): id(_id), 
 			trainId(_train), userId(_userId), userName(_userName), 
 			departStation(_departStation), stopStation(_stopStation), 
 			startDate(_startDate), departTime(_departTime), stopTime(_stopTime), 
@@ -65,39 +65,39 @@ namespace sjtu{
 			return *this;
 		}
 		
-		const string & getId() const {
+		const std::string & getId() const {
 			return id;
 		}
 		
-		const string & getTrain() const {
+		const std::string & getTrain() const {
 			return trainId;
 		}
 		
-		const string & getUserId() const{
+		const std::string & getUserId() const{
 			return userId; 
 		}
 		
-		const string & getUserName() const{
+		const std::string & getUserName() const{
 			return userName;
 		}
 		
-		const string & getDepartStation() const{
+		const std::string & getDepartStation() const{
 			return departStation;
 		}
 		
-		const string & getStopStation() const{
+		const std::string & getStopStation() const{
 			return stopStation;
 		}
 		
-		const string & getStartDate() const {
+		const std::string & getStartDate() const {
 			return startDate;
 		}
 		
-		const string & getDepartTime() const {
+		const std::string & getDepartTime() const {
 			return departTime;
 		}
 		
-		const string & getStopTime() const {
+		const std::string & getStopTime() const {
 			return stopTime;
 		}
 		
@@ -105,7 +105,7 @@ namespace sjtu{
 			return seatType;
 		}
 		
-		int getPrice() const {
+		double getPrice() const {
 			return price;
 		}
 		
@@ -113,35 +113,38 @@ namespace sjtu{
 			return number;
 		}
 		
-		friend std::ifstream &operator>>(std::ifstream &file, ticket &tk) {
-			file >> tk.id;
-			file >> tk.trainId;
-			file >> tk.userId;
-			file >> tk.userName;
-			file >> tk.departStation;
-			file >> tk.stopStation;
-			file >> tk.startDate;
-			file >> tk.departTime;
-			file >> tk.stopTime;
-			file.read(reinterpret_cast<char *> (&tk.seatType), sizeof(int));
-			file.read(reinterpret_cast<char *> (&tk.price), sizeof(int));
-			file.read(reinterpret_cast<char *> (&tk.number), sizeof(int));
-			return file;
+		void modifyNumber(int _number) {
+			if(_number < 0) throw invalid_input();
+			number = _number;
 		}
-		friend std::ofstream &operator<<(std::ofstream &file, const ticket &tk) {
-			file << tk.id;
-			file << tk.trainId;
-			file << tk.userId;
-			file << tk.userName;
-			file << tk.departStation;
-			file << tk.stopStation;
-			file << tk.startDate;
-			file << tk.departTime;
-			file << tk.stopTime;
-			file.write(reinterpret_cast<const char *> (&tk.seatType), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&tk.price), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&tk.number), sizeof(int));
-			return file;
+		
+		friend void readIn(std::ifstream &file, ticket &tk) {
+			readIn(file, tk.id);
+			readIn(file, tk.trainId);
+			readIn(file, tk.userId);
+			readIn(file, tk.userName);
+			readIn(file, tk.departStation);
+			readIn(file, tk.stopStation);
+			readIn(file, tk.startDate);
+			readIn(file, tk.departTime);
+			readIn(file, tk.stopTime);
+			readIn(file, tk.seatType);
+			readIn(file, tk.price);
+			readIn(file, tk.number);
+		}
+		friend void writeOut(std::ofstream &file, const ticket &tk) {
+			writeOut(file, tk.id);
+			writeOut(file, tk.trainId);
+			writeOut(file, tk.userId);
+			writeOut(file, tk.userName);
+			writeOut(file, tk.departStation);
+			writeOut(file, tk.stopStation);
+			writeOut(file, tk.startDate);
+			writeOut(file, tk.departTime);
+			writeOut(file, tk.stopTime);
+			writeOut(file, tk.seatType);
+			writeOut(file, tk.price);
+			writeOut(file, tk.number);
 		}
 	};
 

@@ -11,12 +11,16 @@
 /**
  * similar to vector.hpp in STLite
  */
-#include "exceptions.hpp"
+
 #include <iostream>
 #include <climits>
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include "rwFile.hpp"
+#include "exceptions.hpp"
+
+
 namespace sjtu{
 template<typename T>
 class list {
@@ -391,47 +395,13 @@ public:
         delete head;
         delete tail;
 	}
-	/* original version
-    ~list() {
-        out.write(reinterpret_cast<char*>(&currentlength), sizeof(int));
-        T tmp;
-        for(int i = 1;i <= currentlength; ++i){
-            tmp = head -> next -> value;
-            pop_front();
-            out.write(reinterpret_cast<char*>(&tmp), sizeof(T));
-        }
-        out.close();
-        delete head;
-        delete tail;
-    }
-	*/
     /**
      * assigns specified element with bounds checking
      * throw index_out_of_bound if pos is not in [0, size)
      * !!! Pay attentions
      *   In STL this operator does not check the boundary but I want you to do.
      */
-	friend std::ifstream &operator>>(std::ifstream &file, list &obj) {
-		if(!empty()) throw container_is_not_empty();
-		int _currentlength;
-		file.read(reinterpret_cast<char *> (&_currentlength), sizeof(int));
-		obj.clear();
-		T x;
-		for(int i = 0; i < _currentlength; ++i) {
-			file >> x;
-			obj.push_back(x);
-		}
-		return file;
-	}
-	friend std::ofstream &operator<<(std::ofstream &file, const list &obj) {
-		file.write(reinterpret_cast<const char *> (&obj.currentlength), sizeof(int));
-		node *ptr = obj.head->next;
-		while(ptr != obj.tail) {
-			file << ptr->value;
-			ptr = ptr -> next;
-		}
-		return file;
-	}
+	
     list & operator = (const list & other){
         clear();
         for(int i = 0; i < other.size(); ++i){
@@ -459,7 +429,11 @@ public:
      * access the first element.
      * throw container_is_empty if size == 0
      */
-    const T & front() const {
+    T & front() {
+        if(currentlength == 0) throw container_is_empty();
+        return head -> next -> value;
+    }
+	const T & front() const {
         if(currentlength == 0) throw container_is_empty();
         return head -> next -> value;
     }
@@ -467,7 +441,11 @@ public:
      * access the last element.
      * throw container_is_empty if size == 0
      */
-    const T & back() const {
+    T & back() {
+        if(currentlength == 0) throw container_is_empty();
+        return tail -> prev -> value;
+    }
+	const T & back() const {
         if(currentlength == 0) throw container_is_empty();
         return tail -> prev -> value;
     }
@@ -635,6 +613,27 @@ public:
         delete tmp;
         --currentlength;
     }
+	
+	friend void readIn(std::ifstream &file, list &obj) {
+		if(!empty()) throw container_is_not_empty();
+		obj.clear();
+		int n;
+		readIn(file, n);
+		T x;
+		for(int i = 0; i < n; ++i) {
+			readIn(file, x);
+			obj.push_back(x);
+		}
+	}
+	friend void writeOut(std::ofstream &file, const list &obj) {
+		int n = obj.currentlength;
+		writeOut(file, n);
+		node *ptr = obj.head->next;
+		while(ptr != obj.tail) {
+			writeOut(file, ptr->value);
+			ptr = ptr -> next;
+		}
+	}
 };
 }
 

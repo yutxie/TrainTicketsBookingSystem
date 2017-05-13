@@ -4,9 +4,9 @@
 #include <functional>
 #include <cstddef>
 #include <iostream>
-#include "utility.hpp"
+#include <cstdio>
 #include "exceptions.hpp"
-#include "rwInt.hpp"
+#include "rwFile.hpp"
 
 namespace sjtu {
 	
@@ -16,7 +16,7 @@ template<
 	class Compare = std::less<Key>
 > class map {
 public:
-	typedef pair<const Key, T> value_type;
+	typedef std::pair<const Key, T> value_type;
 	class node {
 	public:
 		node *las,*nex,*ls,*rs,*fa;
@@ -287,7 +287,7 @@ public:
 		q = p;
 		p -> fa = r;
 	}
-	pair<iterator, bool> insert(const value_type &value,node *&p,node *f) {
+	std::pair<iterator, bool> insert(const value_type &value,node *&p,node *f) {
 		if (p == NULL) {
 			++siz;
 			p = new node(value);
@@ -305,21 +305,22 @@ public:
 			}
 			p -> fa = f;
 			p -> height = 0;
-			return pair<iterator,bool>(iterator(this,p),1);
+			return make_pair(iterator(this,p),1);
 		}
 		else
 		{
 			++(p -> size);
 			if (cmp(value.first,p -> data -> first)) {
-				pair<iterator,bool> rtn(insert(value,p -> ls,p));
-				if (height(p -> ls) - height(p -> rs) == 2)
+				std::pair<iterator,bool> rtn(insert(value,p -> ls,p));
+				if (height(p -> ls) - height(p -> rs) == 2) {
 					if (cmp(value.first,p -> ls -> data -> first)) L(p);
 					else R(p -> ls),L(p);
+				}
 				p -> height = max(height(p -> ls),height(p -> rs)) + 1;
 				return rtn;
 			}
 			else if (cmp(p -> data -> first,value.first)) {
-				pair<iterator,bool> rtn(insert(value,p -> rs,p));
+				std::pair<iterator,bool> rtn(insert(value,p -> rs,p));
 				if (height(p -> rs) - height(p -> ls) == 2) {
 					if (cmp(p -> rs -> data -> first,value.first)) R(p);
 					else L(p -> rs),R(p);
@@ -327,15 +328,15 @@ public:
 				p -> height = max(height(p -> ls),height(p -> rs)) + 1;
 				return rtn;
 			}
-			else return pair<iterator,bool>(iterator(this,p),0);
+			else return make_pair(iterator(this,p),0);
 		}
 	}
-	pair<iterator, bool> insert(const value_type &value) {
+	std::pair<iterator, bool> insert(const value_type &value) {
 		if (root == NULL) {
 			be -> nex = en -> las = root = new node(value,be,en,NULL);
 			root -> height = 0;
 			++siz;
-			pair<iterator,bool> rtn(iterator(this,root),1);
+			std::pair<iterator,bool> rtn(iterator(this,root),1);
 			return rtn;
 		}
 		return insert(value,root,NULL);
@@ -476,18 +477,15 @@ public:
 		}
 		return iterator(this,p);
 	}
-	friend std::ifstream &operator>>(std::ifstream &file, map &obj) {
-		if(!empty()) throw container_is_not_empty();
-//		file.read(reinterpret_cast<char *> (&obj.siz), sizeof(int));
-		file >> obj.siz;
+	friend void readIn(std::ifstream &file, map &obj) {
+		if(!obj.empty()) throw container_is_not_empty();
+		readIn(file,obj.siz);
 		Key *s = new Key[obj.siz];
 		for (int i = 0; i < obj.siz; ++i)
-			file >> obj.s[i];
-//			file.read(reinterpret_cast<char *> (&s[i]), sizeof(Key));
+			readIn(file,s[i]);
 		T *v = new T[obj.siz];
 		for (int i = 0; i < obj.siz; ++i)
-			file >> obj.v[i];
-//			v[i].readIn(file);
+			readIn(file,v[i]);
 		node **n = new node *[obj.siz + 2];
 		n[0] = obj.be;n[obj.siz + 1] = obj.en;
 		for (int i = 0; i < obj.siz; ++i)
@@ -495,51 +493,39 @@ public:
 		obj.be -> nex = n[1];obj.obj.en -> las = n[obj.siz];
 		int ls,rs,fa;
 		for (int i = 1; i <= obj.siz; ++i) {
-			file >> ls >> rs >> fa >> (n[i] -> size) >> (n[i] -> height);
-			/*
-			file.read(reinterpret_cast<char *> (&ls), sizeof(int));
-			file.read(reinterpret_cast<char *> (&rs), sizeof(int));
-			file.read(reinterpret_cast<char *> (&fa), sizeof(int));
-			file.read(reinterpret_cast<char *> (&(n[i] -> size)), sizeof(int));
-			file.read(reinterpret_cast<char *> (&(n[i] -> height)), sizeof(int));
-			*/
+			readIn(file,obj.ls);
+			readIn(file,obj.rs);
+			readIn(file,obj.fa);
+			readIn(file,obj.n[i] -> size);
+			readIn(file,obj.n[i] -> height);
 			n[i] -> ls = (ls != 0 ? n[ls] : NULL);
 			n[i] -> rs = (rs != 0 ? n[rs] : NULL);
 			n[i] -> fa = (fa != 0 ? n[fa] : NULL);
 			n[i] -> las = n[i - 1];n[i] -> nex = n[i + 1];
 		}
 		int rt;
-//		file.read(reinterpret_cast<char *> (&rt), sizeof(int));
-		file >> rt;
+		readIn(file,obj.rt);
 		obj.root = n[rt];
 		delete [] s;delete [] v;delete [] n;
-		return file;
 	}
-    friend std::ofstream &operator<<(std::ofstream &file, map &obj) {
-    	file << obj.siz;
-//		file.write(reinterpret_cast<const char *> (&siz), sizeof(int));
+    friend void writeOut(std::ofstream &file, map &obj) {
+		writeOut(file,obj.siz);
 		iterator it = obj.begin();
 		for (int i = 0; i < obj.siz; ++i,++it)
-			file << (it -> first);
-//			file.write(reinterpret_cast<const char *> (&((*it).fisrt))), sizeof(int));
+			writeOut(file,obj.it -> first);
 		it = obj.begin();
 		for (int i = 0; i < obj.siz; ++i,++it)
-			file << (it -> second);
-//			file.write(reinterpret_cast<const char *> (&((*it).second)), sizeof(T));
+			writeOut(file,obj.it -> second);
 		it = obj.begin();
 		for (int i = 1; it != obj.end(); ++i,++it) it.pos -> id = i;
 		for (it = obj.begin(); it != obj.end(); ++it) {
-			file << (it.pos -> ls -> id) << (it.pos -> rs -> id) << (it.pos -> fa -> id) << (it.pos -> size) << (it.pos -> height);
-			/*
-			file.write(reinterpret_cast<const char *> (&(it.pos -> ls -> id)), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&(it.pos -> rs -> id)), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&(it.pos -> fa -> id)), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&(it.pos -> size)), sizeof(int));
-			file.write(reinterpret_cast<const char *> (&(it.pos -> height)), sizeof(int));
-			*/
+			writeOut(file,obj.it.pos -> ls -> id);
+			writeOut(file,obj.it.pos -> rs -> id);
+			writeOut(file,obj.it.pos -> fa -> id);
+			writeOut(file,obj.it.pos -> size);
+			writeOut(file,obj.it.pos -> height);
 		}
-		file << (obj.root -> id);
-//		file.write(reinterpret_cast<const char *> (&(root -> id)), sizeof(int));
+		writeOut(file,obj.root -> id);
 		return file;
 	}
 };

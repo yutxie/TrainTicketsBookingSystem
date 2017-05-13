@@ -3,13 +3,14 @@
 
 #include <iostream>
 #include <cstdio>
+#include <string>
+#include <fstream>
+#include "rwFile.hpp"
 #include "vector.hpp"
 #include "map.hpp"
-#include <fstream>
 #include "station.hpp"
 #include "exceptions.hpp"
 #include "plan.hpp"
-#include "string.hpp"
 
 namespace sjtu {
 
@@ -48,41 +49,43 @@ class train {
 	};
 	
 private:
-	string id;
-	string seat[4];
+	std::string id;
 	vector<station> stationList;
-	map<string, plan> planList;
-	map<string,int> num;
+	map<std::string, plan> planList;
+	map<std::string,int> num;
 public:
 	train() {}
-	train(const string &_id) : id(_id) {}
-	train(const train &other) :id(other.id),stationList(other.stationList),planList(other.planList),num(other.num) {
-		for (int i = 1; i <= 3; ++i)
-			seat[i] = other.seat[i];
-	}
+	train(const std::string &_id) : id(_id) {}
+	train(const train &other) :id(other.id),stationList(other.stationList),planList(other.planList),num(other.num) {}
 	train & operator=(const train &other) {
 		id = other.id;
 		stationList = other.stationList;
 		planList = other.planList;
-		for (int i = 1; i <= 3; ++i)
-			seat[i] = other.seat[i];
 		num = other.num;
 		return *this;
 	}
-	string getId() const {return id;}
-	string getSeat(int type) const {return seat[type];}
+	const std::string getId() const {return id;}
 	vector<station> &getStationList() {return stationList;}
-	station & getStation(const string &stationName) {
+	const vector<station> &getStationList() const {return stationList;}
+	station & getStation(const std::string &stationName) {
 		if (num.find(stationName) == num.end()) throw index_out_of_bound();
-		return station(num[stationName]);
+		return stationList[num[stationName]];
+	}
+	const station & getStation(const std::string &stationName) const {
+		if (num.find(stationName) == num.cend()) throw index_out_of_bound();
+		return stationList[num[stationName]];
 	}
 	station & getStation(const int &index) {
-		if(index >= stationList.size()) throw index_out_of_bound();
+		if(index >= int(stationList.size())) throw index_out_of_bound();
 		return stationList[index];
 	}
-	int getStationId(const string &stationName) {return num[stationName];}
-	map<string, plan> &getPlanList() {return planList;}
-	plan & getPlan(const string &startTime) {
+	const station & getStation(const int &index) const {
+		if(index >= int(stationList.size())) throw index_out_of_bound();
+		return stationList[index];
+	}
+	int getStationId(const std::string &stationName) {return num[stationName];}
+	map<std::string, plan> &getPlanList() {return planList;}
+	plan & getPlan(const std::string &startTime) {
 		if(planList.find(startTime) == planList.end()) throw no_such_plan();
 		return planList[startTime];
 	}
@@ -97,40 +100,37 @@ public:
 			for(int type = 1; type <= 3; ++type)
 				if(tmp.getPrice(type) > st.getPrice(type)) throw invalid_station();
 		}
-		num[st.getName()] = stationList.size()
+		num[st.getName()] = stationList.size();
 		stationList.push_back(st);
 	}
 	void popStation() {
 		if(stationList.empty()) throw no_such_station();
-		map<string,int> ::itearator it;
-		it = num.find(stationList.back());num.erase(it);
+		map<std::string,int>::iterator it;
+		it = num.find(stationList.back().getName());num.erase(it);
 		stationList.pop_back();
 	}
 	void insertPlan(const plan &pl) {
-		const string &startTime = pl.getStartTime();
-		if(planList.find(startTime) != planList.end()) throw existed_plan();
-		planList.insert(std::make_pair(startTime, pl));
+		const std::string &startDate = pl.getStartDate();
+		if(planList.find(startDate) != planList.end()) throw existed_plan();
+		planList.insert(std::make_pair(startDate, pl));
 	}
-	void deletePlan(const string &startTime) {
-		if(planList.find(startTime) == planList.end()) throw no_such_plan();
-		planList.erase(startTime);
+	void deletePlan(const std::string &startTime) {
+		auto it = planList.find(startTime);
+		if(it == planList.end()) throw no_such_plan();
+		planList.erase(it);
 	}
 	
-	friend std::ifstream operator>>(std::ifstream &file, train &tr) {
-		file >> tr.id;
-		for(int i = 1; i <= 3; ++i) file >> tr.seat[i];
-		file >> stationList;
-		file >> planList;
-		file >> num;
-		return file;
+	friend void readIn(std::ifstream &file, train &tr) {
+		readIn(file, tr.id);
+		readIn(file, tr.stationList);
+		readIn(file, tr.planList);
+		readIn(file, tr.num);
 	}
-	friend std::ofstream operator<<(std::ofstream &file, train &tr) {
-		file << tr.id;
-		for(int i = 1; i <= 3; ++i) file << tr.seat[i];
-		file << stationList;
-		file << planList;
-		file << num;
-		return file;
+	friend void writeOut(std::ofstream &file, const train &tr) {
+		writeOut(file, tr.id);
+		writeOut(file, tr.stationList);
+		writeOut(file, tr.planList);
+		writeOut(file, tr.num);
 	}
 };
 
