@@ -109,7 +109,7 @@ class myClass {
 | void | modifyName(const std::string &newName) | 修改用户名 |
 | void | modifyPassword(const std::string &newPassword) | 修改用户密码 |
 | void | orderTicket(const ticket &tk) | 订票 若该票已存在于用户已订票清单 |
-| void | disorderTicket(const std::string &ticketId) | 退票 若该用户未订此车票 |
+| void | disorderTicket(const std::string &ticketId, int number) | 退票 若该用户未订此车票 |
 
 注意:
 1. 已订车票清单用list存储
@@ -134,12 +134,14 @@ class myClass {
 | bool | loginAsAdmin(const std::string &_password) const | 作为管理员登录 判断密码是否正确 |
 | void | initialize() | 初始化系统 包括重置系统密码 |
 | void | importTrain(std::ifstream &file) | 从file导入车次信息 |
-| void | query(const std::string &departStation, const std::string &stopStation, const std::string &departDate) | 查询余票信息 |
-| const ticket & | orderTicket(const user &us, const plan &pl, int u, int v, int type) | 订票 |
-| void | disorderTicket(const ticket &tk) | 退票 |
+| list< std::string> & | query(const std::string &departStation, const std::string &stopStation) | 查询从某站到某站的车次 |
+| double | getTicketPrice(const std::string &departStation, const std::string &stopStation, const train &_train, const int &type) const | 查询票价 |
+| const ticket & | orderTicket(user &us, plan &pl, const std::string &departStation, const std::string &stopStation, int type, int number) | 订票 |
+| void | disorderTicket(user &us, const std::string &ticketId, int number) | 退票 |
 | bool | loginAsUser(const std::string &userId, const std::string &userPassword) | 作为用户登录 判断密码是否正确 |
 | user & | signUpUser(const std::string &userId, const std::string &userPassword, const std::string &userName) | 注册用户 |
-| void | work(const std::string &str) | 解析str内容并执行相应命令 同时将操作写入日志 |
+| void | importTrain(std::ifstream &file) | 导入车次 |
+| void | work(std::ifstream &file) | 解析文件内容并执行相应命令 |
 | void | writeOutLog(std::ostream &os) | 向os写出系统日志 |
 | friend std::ifstream & | operator>>(std::ifstream &file, list &obj) | 从file读入数据 |
 | friend std::ofstream & | operator<<(std::ofstream &file, const list &obj) | 向file写入数据 |
@@ -213,8 +215,8 @@ class myClass {
 | int | getStationNumber() const | 返回所属车次包含的车站总数 |
 | bool | getStatus() const | 返回发售状态 |
 | int | getLeftTickets(int type, int u, int v) const | 返回从该车次uth站点到vth站点type类型座位剩余票数 特殊地若传入不合法则返回0 |
-| void | orderTicket(int type, int u, int v) | 订票 修改余票信息 |
-| void | disorderTicket(int type, int u, int v) | 退票 修改余票信息 |
+| void | orderTicket(int type, int u, int v, int number) | 订票 修改余票信息 |
+| void | disorderTicket(int type, int u, int v, int number) | 退票 修改余票信息 |
 | void | modifyStartDate(const std::string &newStartDate) | 修改始发日期 |
 | void | modifyStatus(bool newStatus) | 修改售票状态 |
 
